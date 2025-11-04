@@ -2,7 +2,7 @@
 // Include auth first (before any output)
 require_once __DIR__ . '/../includes/auth.php';
 
-requireAuthor();
+requireLogin();
 
 $current_user = getCurrentUser();
 
@@ -37,9 +37,11 @@ require_once __DIR__ . '/../includes/header.php';
 <div class="container mx-auto px-4 py-8">
     <div class="flex items-center justify-between mb-8">
         <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
-        <a href="new-post.php" class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-            <i class="fas fa-plus mr-2"></i>New Post
-        </a>
+        <?php if (isAuthor()): ?>
+            <a href="new-post.php" class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                <i class="fas fa-plus mr-2"></i>New Post
+            </a>
+        <?php endif; ?>
     </div>
     
     <!-- Stats -->
@@ -89,7 +91,12 @@ require_once __DIR__ . '/../includes/header.php';
                     <?php if (empty($posts)): ?>
                         <tr>
                             <td colspan="6" class="px-6 py-8 text-center text-gray-500">
-                                No posts yet. <a href="new-post.php" class="text-blue-600 hover:text-blue-700">Create your first post</a>
+                                No posts yet. 
+                                <?php if (isAuthor()): ?>
+                                    <a href="new-post.php" class="text-blue-600 hover:text-blue-700">Create your first post</a>
+                                <?php else: ?>
+                                    <span class="text-gray-400">You need to be an author to create posts.</span>
+                                <?php endif; ?>
                             </td>
                         </tr>
                     <?php else: ?>
