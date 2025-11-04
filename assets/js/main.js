@@ -4,10 +4,79 @@
 document.addEventListener('DOMContentLoaded', function() {
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
+    const mobileMenuClose = document.getElementById('mobile-menu-close');
+    
+    function toggleMobileMenu() {
+        if (mobileMenu) {
+            mobileMenu.classList.toggle('hidden');
+            // Prevent body scroll when menu is open
+            if (!mobileMenu.classList.contains('hidden')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        }
+    }
+    
+    function closeMobileMenu() {
+        if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+    }
     
     if (mobileMenuBtn && mobileMenu) {
-        mobileMenuBtn.addEventListener('click', function() {
-            mobileMenu.classList.toggle('hidden');
+        mobileMenuBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleMobileMenu();
+        });
+    }
+    
+    if (mobileMenuClose && mobileMenu) {
+        mobileMenuClose.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            closeMobileMenu();
+        });
+    }
+    
+    // Close mobile menu when clicking on a link
+    if (mobileMenu) {
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+        mobileMenuLinks.forEach(function(link) {
+            link.addEventListener('click', function() {
+                closeMobileMenu();
+            });
+        });
+    }
+    
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', function(e) {
+        if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+            if (!mobileMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                closeMobileMenu();
+            }
+        }
+    });
+    
+    // Mobile search toggle
+    const searchToggleBtnMobile = document.getElementById('search-toggle-btn-mobile');
+    const searchFormMobileContainer = document.getElementById('search-form-mobile-container');
+    const searchInputMobile = document.getElementById('search-input-mobile');
+    
+    if (searchToggleBtnMobile && searchFormMobileContainer) {
+        searchToggleBtnMobile.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            searchFormMobileContainer.classList.toggle('hidden');
+            if (!searchFormMobileContainer.classList.contains('hidden')) {
+                setTimeout(function() {
+                    if (searchInputMobile) {
+                        searchInputMobile.focus();
+                    }
+                }, 100);
+            }
         });
     }
     
@@ -95,38 +164,63 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Scroll to top buttons (both bottom left and top right)
+    // Scroll buttons (top, bottom-left up, bottom-right down)
     const scrollToTopBottom = document.getElementById('scroll-to-top-bottom');
     const scrollToTopTop = document.getElementById('scroll-to-top-top');
+    const scrollToBottom = document.getElementById('scroll-to-bottom');
     
-    function handleScrollToTop() {
+    function handleScrollButtons() {
         const scrollPosition = window.pageYOffset;
-        const shouldShow = scrollPosition > 300;
+        const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const shouldShowTop = scrollPosition > 300;
+        const shouldShowBottom = scrollPosition < documentHeight - 300;
         
+        // Bottom left - scroll to top (show when scrolled down)
         if (scrollToTopBottom) {
-            if (shouldShow) {
+            if (shouldShowTop) {
                 scrollToTopBottom.classList.remove('hidden');
             } else {
                 scrollToTopBottom.classList.add('hidden');
             }
         }
         
+        // Top right - scroll to top (show when scrolled down)
         if (scrollToTopTop) {
-            if (shouldShow) {
+            if (shouldShowTop) {
                 scrollToTopTop.classList.remove('hidden');
             } else {
                 scrollToTopTop.classList.add('hidden');
             }
         }
+        
+        // Bottom right - scroll to bottom (show when not at bottom)
+        if (scrollToBottom) {
+            if (shouldShowBottom) {
+                scrollToBottom.classList.remove('hidden');
+            } else {
+                scrollToBottom.classList.add('hidden');
+            }
+        }
     }
     
     // Show/hide buttons based on scroll position
-    window.addEventListener('scroll', handleScrollToTop);
+    window.addEventListener('scroll', handleScrollButtons);
     
-    // Scroll to top when clicked (both buttons)
+    // Initial check
+    handleScrollButtons();
+    
+    // Scroll to top when clicked
     function scrollToTop() {
         window.scrollTo({
             top: 0,
+            behavior: 'smooth'
+        });
+    }
+    
+    // Scroll to bottom when clicked
+    function scrollToBottomFunc() {
+        window.scrollTo({
+            top: document.documentElement.scrollHeight,
             behavior: 'smooth'
         });
     }
@@ -137,6 +231,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (scrollToTopTop) {
         scrollToTopTop.addEventListener('click', scrollToTop);
+    }
+    
+    if (scrollToBottom) {
+        scrollToBottom.addEventListener('click', scrollToBottomFunc);
     }
     
 });

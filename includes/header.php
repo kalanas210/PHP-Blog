@@ -18,43 +18,44 @@ $categories = getCategories();
     </script>
 </head>
 <body class="bg-white">
-    <!-- Header Row 1 -->
-    <header class="border-b border-gray-200">
+    <!-- Header -->
+    <header class="border-b border-gray-200 relative">
+        <!-- Header Row 1 -->
         <div class="container mx-auto px-4">
-            <div class="flex items-center justify-between py-4">
-                <!-- Left: Menu Icon -->
-                <button id="mobile-menu-btn" class="lg:hidden text-gray-700 hover:text-gray-900">
+            <div class="flex items-center justify-between py-3 md:py-4">
+                <!-- Left: Menu Icon (Mobile) -->
+                <button id="mobile-menu-btn" class="lg:hidden text-gray-700 hover:text-gray-900 p-2">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
                 
                 <div class="hidden lg:block"></div>
                 
                 <!-- Center: Logo/Title -->
-                <div class="flex-1 text-center">
+                <div class="flex-1 text-center lg:flex-1">
                     <a href="index.php" class="flex items-center justify-center gap-2">
                         <?php if (defined('SITE_LOGO') && SITE_LOGO): ?>
                             <img src="<?php echo SITE_URL; ?>/assets/images/<?php echo htmlspecialchars(SITE_LOGO); ?>" 
                                  alt="<?php echo SITE_NAME; ?>" 
-                                 class="h-10 object-contain"
+                                 class="h-8 md:h-10 object-contain"
                                  onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                            <span class="text-3xl font-bold text-gray-900" style="display: none;"><?php echo SITE_NAME; ?></span>
+                            <span class="text-2xl md:text-3xl font-bold text-gray-900" style="display: none;"><?php echo SITE_NAME; ?></span>
                         <?php else: ?>
-                            <span class="text-3xl font-bold text-gray-900"><?php echo SITE_NAME; ?></span>
+                            <span class="text-2xl md:text-3xl font-bold text-gray-900"><?php echo SITE_NAME; ?></span>
                         <?php endif; ?>
                     </a>
                 </div>
                 
                 <!-- Right: Sign Up/Login or Profile -->
-                <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2 md:gap-4">
                     <?php if ($current_user): ?>
                         <div class="relative">
-                            <button id="profile-menu-btn" class="flex items-center gap-2 text-gray-700 hover:text-gray-900">
+                            <button id="profile-menu-btn" class="flex items-center gap-1 md:gap-2 text-gray-700 hover:text-gray-900 p-1">
                                 <img src="<?php echo SITE_URL; ?>/assets/images/<?php echo htmlspecialchars($current_user['profile_photo']); ?>" 
                                      alt="Profile" 
-                                     class="w-8 h-8 rounded-full object-cover"
+                                     class="w-7 h-7 md:w-8 md:h-8 rounded-full object-cover"
                                      onerror="this.src='<?php echo SITE_URL; ?>/assets/images/default-avatar.png'">
-                                <span class="hidden md:inline"><?php echo htmlspecialchars($current_user['username']); ?></span>
-                                <i class="fas fa-chevron-down text-xs"></i>
+                                <span class="hidden md:inline text-sm"><?php echo htmlspecialchars($current_user['username']); ?></span>
+                                <i class="fas fa-chevron-down text-xs hidden md:inline"></i>
                             </button>
                             <div id="profile-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 z-50">
                                 <a href="dashboard/index.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
@@ -74,18 +75,19 @@ $categories = getCategories();
                             </div>
                         </div>
                     <?php else: ?>
-                        <a href="login.php" class="px-4 py-2 text-gray-700 hover:text-gray-900">Login</a>
-                        <a href="register.php" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Sign Up</a>
+                        <a href="login.php" class="px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base text-gray-700 hover:text-gray-900">Login</a>
+                        <a href="register.php" class="px-3 py-1.5 md:px-4 md:py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm md:text-base">Sign Up</a>
                     <?php endif; ?>
                 </div>
             </div>
         </div>
         
         <!-- Navigation Row 2 -->
-        <nav class="border-t border-gray-200">
+        <nav class="border-t border-gray-200 relative">
             <div class="container mx-auto px-4">
-                <div class="flex items-center justify-center">
-                    <ul class="hidden lg:flex items-center gap-6 py-4">
+                <!-- Desktop Navigation -->
+                <div class="hidden lg:flex items-center justify-center">
+                    <ul class="flex items-center gap-6 py-4">
                         <li><a href="index.php" class="text-gray-700 hover:text-gray-900 font-medium">Home</a></li>
                         <?php foreach ($categories as $cat): 
                             // Get 3 posts from this category for the dropdown
@@ -123,17 +125,6 @@ $categories = getCategories();
                         <li><a href="index.php#authors" class="text-gray-700 hover:text-gray-900 font-medium">Author list</a></li>
                     </ul>
                     
-                    <!-- Mobile Menu -->
-                    <div id="mobile-menu" class="lg:hidden hidden absolute top-full left-0 w-full bg-white border-b border-gray-200 shadow-lg z-50">
-                        <ul class="py-4">
-                            <li><a href="index.php" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Home</a></li>
-                            <?php foreach ($categories as $cat): ?>
-                                <li><a href="index.php?category=<?php echo $cat['slug']; ?>" class="block px-4 py-2 text-gray-700 hover:bg-gray-100"><?php echo htmlspecialchars($cat['name']); ?></a></li>
-                            <?php endforeach; ?>
-                            <li><a href="index.php#authors" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Author list</a></li>
-                        </ul>
-                    </div>
-                    
                     <div class="flex items-center gap-6 ml-6">
                         <a href="index.php#newsletter" class="text-gray-700 hover:text-gray-900 font-medium">Newsletter</a>
                         <div class="flex items-center">
@@ -153,6 +144,51 @@ $categories = getCategories();
                             </form>
                         </div>
                     </div>
+                </div>
+                
+                <!-- Mobile Navigation -->
+                <div class="lg:hidden flex items-center justify-between py-3">
+                    <a href="index.php#newsletter" class="text-gray-700 hover:text-gray-900 font-medium text-sm">Newsletter</a>
+                    <div class="flex items-center gap-3">
+                        <button type="button" id="search-toggle-btn-mobile" class="text-gray-700 hover:text-gray-900 focus:outline-none cursor-pointer p-2">
+                            <i class="fas fa-search text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Mobile Search Form -->
+                <div id="search-form-mobile-container" class="lg:hidden hidden pb-3">
+                    <form method="GET" action="index.php" id="search-form-mobile" class="flex items-center w-full">
+                        <input type="text" 
+                               name="search" 
+                               id="search-input-mobile"
+                               placeholder="Search..." 
+                               class="flex-1 px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                               autocomplete="off">
+                        <button type="submit" class="px-4 py-2 bg-gray-700 text-white rounded-r-lg hover:bg-gray-800 focus:outline-none">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="lg:hidden hidden fixed top-full left-0 w-full bg-white border-b border-gray-200 shadow-lg z-50 max-h-[80vh] overflow-y-auto">
+                <div class="container mx-auto px-4">
+                    <div class="flex items-center justify-between py-3 border-b border-gray-200">
+                        <h3 class="font-semibold text-gray-900">Menu</h3>
+                        <button id="mobile-menu-close" class="text-gray-700 hover:text-gray-900 p-2">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                    <ul class="py-4">
+                        <li><a href="index.php" class="block px-4 py-3 text-gray-700 hover:bg-gray-100 font-medium">Home</a></li>
+                        <?php foreach ($categories as $cat): ?>
+                            <li><a href="index.php?category=<?php echo $cat['slug']; ?>" class="block px-4 py-3 text-gray-700 hover:bg-gray-100"><?php echo htmlspecialchars($cat['name']); ?></a></li>
+                        <?php endforeach; ?>
+                        <li><a href="index.php#authors" class="block px-4 py-3 text-gray-700 hover:bg-gray-100">Author list</a></li>
+                        <li><a href="index.php#newsletter" class="block px-4 py-3 text-gray-700 hover:bg-gray-100">Newsletter</a></li>
+                    </ul>
                 </div>
             </div>
         </nav>

@@ -386,12 +386,14 @@ $authors = getAuthors(6);
                 <input type="email" 
                        placeholder="Enter your email" 
                        required
-                       class="flex-1 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                       class="flex-1 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-gray-500">
+                <button type="submit" class="px-6 py-2 bg-gray-800 text-white rounded hover:bg-gray-900 transition-colors">
                     Subscribe
                 </button>
             </form>
-            <p class="text-xs text-gray-500 mt-4">Leave this field empty if you're human:</p>
+            <p class="text-xs text-gray-500 mt-4">
+                 We respect your privacy. Unsubscribe at any time.
+            </p>
         </div>
     </section>
     

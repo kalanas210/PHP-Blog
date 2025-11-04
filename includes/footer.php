@@ -5,10 +5,15 @@
         <i class="fas fa-chevron-up"></i>
     </button>
     
-    <!-- Scroll to Top Button (Top Right) -->
-    <button id="scroll-to-top-top" class="hidden fixed top-8 right-8 bg-gray-800 text-white p-3 rounded-full shadow-lg hover:bg-gray-900 transition-all z-50">
-        <i class="fas fa-chevron-up"></i>
+    <!-- Scroll to Bottom Button (Bottom Right) -->
+    <button id="scroll-to-bottom" class="hidden fixed bottom-8 right-8 bg-gray-800 text-white p-3 rounded-full shadow-lg hover:bg-gray-900 transition-all z-50">
+        <i class="fas fa-chevron-down"></i>
     </button>
+    
+    <!-- Scroll to Top Button (Top Right) -->
+    <!-- <button id="scroll-to-top-top" class="hidden fixed top-8 right-8 bg-gray-800 text-white p-3 rounded-full shadow-lg hover:bg-gray-900 transition-all z-50">
+        <i class="fas fa-chevron-up"></i>
+    </button> -->
     
     <!-- Footer -->
     <footer class="bg-white border-t border-gray-200 mt-16">
