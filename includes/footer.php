@@ -52,8 +52,11 @@
             </div>
             
             <div class="border-t border-gray-200 mt-8 pt-8 text-center">
+                <p class="text-gray-600 text-sm mb-2">
+                    &copy; <?php echo date('Y'); ?> KSA News - All rights reserved. Published with Ryzera PVT LTD by <a href="https://www.linkedin.com/in/kalanasandakelum/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700">Kalana Sandakelum</a>
+                </p>
                 <p class="text-gray-600 text-sm">
-                    &copy; <?php echo date('Y'); ?> <?php echo SITE_NAME; ?> - All rights reserved. Published with WordPress & The Fox theme
+                    <a href="https://ryzera.io" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700">ryzera.io</a>
                 </p>
             </div>
         </div>

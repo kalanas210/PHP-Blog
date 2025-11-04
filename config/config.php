@@ -6,8 +6,9 @@ define('DB_PASS', '12345');
 define('DB_NAME', 'blog_app');
 
 // Site Configuration
-define('SITE_NAME', 'Hague');
+define('SITE_NAME', 'KSA News');
 define('SITE_URL', 'http://localhost/blog');
+define('SITE_LOGO', 'logo.png'); // Set to false or empty string to use text only
 
 // File Upload Configuration
 define('UPLOAD_DIR', __DIR__ . '/../assets/images/');

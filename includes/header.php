@@ -31,7 +31,17 @@ $categories = getCategories();
                 
                 <!-- Center: Logo/Title -->
                 <div class="flex-1 text-center">
-                    <a href="index.php" class="text-3xl font-bold text-gray-900"><?php echo SITE_NAME; ?></a>
+                    <a href="index.php" class="flex items-center justify-center gap-2">
+                        <?php if (defined('SITE_LOGO') && SITE_LOGO): ?>
+                            <img src="<?php echo SITE_URL; ?>/assets/images/<?php echo htmlspecialchars(SITE_LOGO); ?>" 
+                                 alt="<?php echo SITE_NAME; ?>" 
+                                 class="h-10 object-contain"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <span class="text-3xl font-bold text-gray-900" style="display: none;"><?php echo SITE_NAME; ?></span>
+                        <?php else: ?>
+                            <span class="text-3xl font-bold text-gray-900"><?php echo SITE_NAME; ?></span>
+                        <?php endif; ?>
+                    </a>
                 </div>
                 
                 <!-- Right: Sign Up/Login or Profile -->
