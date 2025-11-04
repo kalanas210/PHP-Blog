@@ -121,7 +121,6 @@ $categories = getCategories();
                             </li>
                         <?php endforeach; ?>
                         <li><a href="index.php#authors" class="text-gray-700 hover:text-gray-900 font-medium">Author list</a></li>
-                        <li><a href="index.php#newsletter" class="text-gray-700 hover:text-gray-900 font-medium">Newsletter</a></li>
                     </ul>
                     
                     <!-- Mobile Menu -->
@@ -132,7 +131,6 @@ $categories = getCategories();
                                 <li><a href="index.php?category=<?php echo $cat['slug']; ?>" class="block px-4 py-2 text-gray-700 hover:bg-gray-100"><?php echo htmlspecialchars($cat['name']); ?></a></li>
                             <?php endforeach; ?>
                             <li><a href="index.php#authors" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Author list</a></li>
-                            <li><a href="index.php#newsletter" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Newsletter</a></li>
                         </ul>
                     </div>
                     

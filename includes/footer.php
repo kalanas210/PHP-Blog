@@ -1,63 +1,69 @@
     </main>
     
+    <!-- Scroll to Top Button (Bottom Left) -->
+    <button id="scroll-to-top-bottom" class="hidden fixed bottom-8 left-8 bg-gray-800 text-white p-3 rounded-full shadow-lg hover:bg-gray-900 transition-all z-50">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+    
+    <!-- Scroll to Top Button (Top Right) -->
+    <button id="scroll-to-top-top" class="hidden fixed top-8 right-8 bg-gray-800 text-white p-3 rounded-full shadow-lg hover:bg-gray-900 transition-all z-50">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+    
     <!-- Footer -->
-    <footer class="bg-gray-50 border-t border-gray-200 mt-16">
-        <div class="container mx-auto px-4 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <!-- About Us -->
-                <div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-4">About us</h3>
-                    <p class="text-gray-600 text-sm">
-                        Welcome to <?php echo SITE_NAME; ?>, your destination for thoughtful articles, 
-                        engaging stories, and insightful perspectives on various topics.
-                    </p>
-                </div>
-                
-                <!-- Categories -->
-                <div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-4">Categories</h3>
-                    <ul class="space-y-2">
-                        <?php 
-                        $footer_categories = getCategories();
-                        foreach ($footer_categories as $cat): 
-                        ?>
-                            <li>
-                                <a href="index.php?category=<?php echo $cat['slug']; ?>" class="text-gray-600 hover:text-gray-900 text-sm">
-                                    <?php echo htmlspecialchars($cat['name']); ?>
-                                </a>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-                
-                <!-- Quick Links -->
-                <div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-4">Quick Links</h3>
-                    <ul class="space-y-2">
-                        <li><a href="index.php" class="text-gray-600 hover:text-gray-900 text-sm">Home</a></li>
-                        <li><a href="index.php#authors" class="text-gray-600 hover:text-gray-900 text-sm">Authors</a></li>
-                        <li><a href="index.php#newsletter" class="text-gray-600 hover:text-gray-900 text-sm">Newsletter</a></li>
-                    </ul>
-                </div>
-                
-                <!-- Legal -->
-                <div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-4">Legal</h3>
-                    <ul class="space-y-2">
-                        <li><a href="terms.php" class="text-gray-600 hover:text-gray-900 text-sm">Terms & Conditions</a></li>
-                        <li><a href="privacy.php" class="text-gray-600 hover:text-gray-900 text-sm">Privacy Policy</a></li>
-                        <li><a href="contact.php" class="text-gray-600 hover:text-gray-900 text-sm">Contact</a></li>
-                    </ul>
+    <footer class="bg-white border-t border-gray-200 mt-16">
+        <!-- Top Footer Bar -->
+        <div class="border-b border-gray-200">
+            <div class="container mx-auto px-4 py-4">
+                <div class="flex items-center justify-center">
+                    <div class="flex items-center gap-6">
+                        <a href="about.php" class="text-gray-700 hover:text-gray-900 text-sm">About</a>
+                        <a href="privacy.php" class="text-gray-700 hover:text-gray-900 text-sm">Privacy</a>
+                        <a href="help.php" class="text-gray-700 hover:text-gray-900 text-sm">Help</a>
+                        <a href="terms.php" class="text-gray-700 hover:text-gray-900 text-sm">Terms</a>
+                        <a href="contact.php" class="text-gray-700 hover:text-gray-900 text-sm">Contact</a>
+                    </div>
                 </div>
             </div>
-            
-            <div class="border-t border-gray-200 mt-8 pt-8 text-center">
+        </div>
+        
+        <!-- Main Footer Content -->
+        <div class="container mx-auto px-4 py-12">
+            <div class="text-center">
+                <!-- Site Name -->
+                <h2 class="text-4xl font-bold text-gray-900 mb-4 uppercase"><?php echo SITE_NAME; ?></h2>
+                
+                <!-- Copyright -->
                 <p class="text-gray-600 text-sm mb-2">
-                    &copy; <?php echo date('Y'); ?> KSA News - All rights reserved. Published with Ryzera PVT LTD by <a href="https://www.linkedin.com/in/kalanasandakelum/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700">Kalana Sandakelum</a>
+                    &copy;<?php echo date('Y'); ?> - All rights reserved. Published By <a href="https://www.linkedin.com/in/kalanasandakelum/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700">Kalana Sandakelum</a> .
                 </p>
-                <p class="text-gray-600 text-sm">
-                    <a href="https://ryzera.io" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700">ryzera.io</a>
+                
+                <!-- Powered by -->
+                <p class="text-gray-600 text-sm mb-8">
+                    Powered by <a href="https://ryzera.io" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700">KSA</a> Labs.
                 </p>
+                
+                <!-- Social Media Icons -->
+                <div class="flex items-center justify-center gap-4">
+                    <a href="#" class="text-gray-700 hover:text-gray-900 transition-colors" title="Facebook">
+                        <i class="fab fa-facebook-f text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-700 hover:text-gray-900 transition-colors" title="Twitter">
+                        <i class="fab fa-twitter text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-700 hover:text-gray-900 transition-colors" title="X">
+                        <i class="fab fa-x-twitter text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-700 hover:text-gray-900 transition-colors" title="Instagram">
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
+                    <a href="mailto:contact@ksanews.com" class="text-gray-700 hover:text-gray-900 transition-colors" title="Email">
+                        <i class="fas fa-envelope text-xl"></i>
+                    </a>
+                    <a href="https://ryzera.io" target="_blank" rel="noopener noreferrer" class="text-gray-700 hover:text-gray-900 transition-colors" title="Website">
+                        <i class="fas fa-globe text-xl"></i>
+                    </a>
+                </div>
             </div>
         </div>
     </footer>

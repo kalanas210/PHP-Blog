@@ -95,4 +95,48 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    // Scroll to top buttons (both bottom left and top right)
+    const scrollToTopBottom = document.getElementById('scroll-to-top-bottom');
+    const scrollToTopTop = document.getElementById('scroll-to-top-top');
+    
+    function handleScrollToTop() {
+        const scrollPosition = window.pageYOffset;
+        const shouldShow = scrollPosition > 300;
+        
+        if (scrollToTopBottom) {
+            if (shouldShow) {
+                scrollToTopBottom.classList.remove('hidden');
+            } else {
+                scrollToTopBottom.classList.add('hidden');
+            }
+        }
+        
+        if (scrollToTopTop) {
+            if (shouldShow) {
+                scrollToTopTop.classList.remove('hidden');
+            } else {
+                scrollToTopTop.classList.add('hidden');
+            }
+        }
+    }
+    
+    // Show/hide buttons based on scroll position
+    window.addEventListener('scroll', handleScrollToTop);
+    
+    // Scroll to top when clicked (both buttons)
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+    
+    if (scrollToTopBottom) {
+        scrollToTopBottom.addEventListener('click', scrollToTop);
+    }
+    
+    if (scrollToTopTop) {
+        scrollToTopTop.addEventListener('click', scrollToTop);
+    }
+    
 });
