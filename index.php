@@ -4,17 +4,17 @@ require_once __DIR__ . '/includes/header.php';
 $category_filter = isset($_GET['category']) ? $_GET['category'] : null;
 
 // Get featured posts (hero section)
-$featured_posts = getPosts(1, 0, null, 'published');
+$featured_posts = getPosts(1, 0, $category_filter, 'published');
 $featured_post = !empty($featured_posts) ? $featured_posts[0] : null;
 
-// Get popular posts (most popular section)
-$popular_posts = getPopularPosts(4);
+// Get popular posts (most popular section) - only if not filtering by category
+$popular_posts = $category_filter ? [] : getPopularPosts(4);
 
 // Get latest posts for sidebar
-$latest_posts = getPosts(5, 0, null, 'published');
+$latest_posts = getPosts(5, 0, $category_filter, 'published');
 
 // Get posts for left column
-$left_posts = getPosts(2, 1, null, 'published');
+$left_posts = getPosts(2, 1, $category_filter, 'published');
 
 // Get posts by category
 $category_sections = [];
@@ -51,6 +51,16 @@ $authors = getAuthors(6);
 ?>
 
 <div class="container mx-auto px-4 py-8">
+    <?php if ($category_filter && $selected_cat): ?>
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2"><?php echo htmlspecialchars($selected_cat['name']); ?></h1>
+            <?php if ($selected_cat['description']): ?>
+                <p class="text-gray-600"><?php echo htmlspecialchars($selected_cat['description']); ?></p>
+            <?php endif; ?>
+            <a href="index.php" class="text-blue-600 hover:text-blue-700 text-sm mt-2 inline-block">← Back to all posts</a>
+        </div>
+    <?php endif; ?>
+    
     <!-- Main Hero Section -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16">
         <!-- Left Column: Small Posts -->

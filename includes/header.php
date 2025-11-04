@@ -84,24 +84,40 @@ $categories = getCategories();
         <!-- Navigation Row 2 -->
         <nav class="border-t border-gray-200">
             <div class="container mx-auto px-4">
-                <div class="flex items-center justify-between">
+                <div class="flex items-center justify-center">
                     <ul class="hidden lg:flex items-center gap-6 py-4">
                         <li><a href="index.php" class="text-gray-700 hover:text-gray-900 font-medium">Home</a></li>
-                        <li class="relative group">
-                            <a href="#" class="text-gray-700 hover:text-gray-900 font-medium flex items-center gap-1">
-                                Posts <i class="fas fa-chevron-down text-xs"></i>
-                            </a>
-                            <ul class="hidden group-hover:block absolute top-full left-0 mt-1 w-48 bg-white rounded-md shadow-lg border border-gray-200 py-2 z-50">
-                                <?php foreach ($categories as $cat): ?>
-                                    <li><a href="index.php?category=<?php echo $cat['slug']; ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><?php echo htmlspecialchars($cat['name']); ?></a></li>
-                                <?php endforeach; ?>
-                            </ul>
-                        </li>
-                        <?php foreach ($categories as $cat): ?>
+                        <?php foreach ($categories as $cat): 
+                            // Get 3 posts from this category for the dropdown
+                            $cat_posts = getPosts(3, 0, $cat['slug'], 'published');
+                        ?>
                             <li class="relative group">
                                 <a href="index.php?category=<?php echo $cat['slug']; ?>" class="text-gray-700 hover:text-gray-900 font-medium flex items-center gap-1">
                                     <?php echo htmlspecialchars($cat['name']); ?> <i class="fas fa-chevron-down text-xs"></i>
                                 </a>
+                                <?php if (!empty($cat_posts)): ?>
+                                    <div class="hidden group-hover:block absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-96 bg-white rounded-lg shadow-xl border border-gray-200 z-50 p-4">
+                                        <div class="grid grid-cols-1 gap-3">
+                                            <?php foreach ($cat_posts as $post): ?>
+                                                <a href="post.php?slug=<?php echo $post['slug']; ?>" class="flex items-start gap-3 p-2 rounded hover:bg-gray-50 transition-colors">
+                                                    <img src="<?php echo SITE_URL; ?>/assets/images/<?php echo htmlspecialchars($post['featured_image'] ?? 'default.jpg'); ?>" 
+                                                         alt="<?php echo htmlspecialchars($post['title']); ?>"
+                                                         class="w-20 h-20 object-cover rounded flex-shrink-0"
+                                                         onerror="this.src='<?php echo SITE_URL; ?>/assets/images/default.jpg'">
+                                                    <div class="flex-1 min-w-0">
+                                                        <h4 class="text-sm font-semibold text-gray-900 line-clamp-2 mb-1"><?php echo htmlspecialchars($post['title']); ?></h4>
+                                                        <p class="text-xs text-gray-500"><?php echo formatDate($post['published_at'] ?? $post['created_at']); ?></p>
+                                                    </div>
+                                                </a>
+                                            <?php endforeach; ?>
+                                        </div>
+                                        <div class="mt-3 pt-3 border-t border-gray-200 text-center">
+                                            <a href="index.php?category=<?php echo $cat['slug']; ?>" class="text-sm text-blue-600 hover:text-blue-700 font-medium">
+                                                View all <?php echo htmlspecialchars($cat['name']); ?> posts →
+                                            </a>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
                             </li>
                         <?php endforeach; ?>
                         <li><a href="index.php#authors" class="text-gray-700 hover:text-gray-900 font-medium">Author list</a></li>
