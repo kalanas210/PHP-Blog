@@ -136,10 +136,24 @@ $categories = getCategories();
                         </ul>
                     </div>
                     
-                    <div class="flex items-center gap-4">
-                        <a href="index.php#newsletter" class="text-gray-700 hover:text-gray-900">
-                            <i class="fas fa-search"></i>
-                        </a>
+                    <div class="flex items-center gap-6 ml-6">
+                        <a href="index.php#newsletter" class="text-gray-700 hover:text-gray-900 font-medium">Newsletter</a>
+                        <div class="flex items-center">
+                            <button type="button" id="search-toggle-btn" class="text-gray-700 hover:text-gray-900 focus:outline-none cursor-pointer">
+                                <i class="fas fa-search text-lg"></i>
+                            </button>
+                            <form method="GET" action="index.php" id="search-form" class="hidden ml-3 flex items-center">
+                                <input type="text" 
+                                       name="search" 
+                                       id="search-input"
+                                       placeholder="Search..." 
+                                       class="px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-48 text-sm"
+                                       autocomplete="off">
+                                <button type="submit" class="px-4 py-2 bg-gray-700 text-white rounded-r-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

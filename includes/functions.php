@@ -122,6 +122,35 @@ function getPosts($limit = 10, $offset = 0, $category = null, $status = 'publish
     return $posts;
 }
 
+// Search posts
+function searchPosts($query, $limit = 20, $offset = 0) {
+    $conn = getDB();
+    $search_term = '%' . $conn->real_escape_string($query) . '%';
+    
+    $stmt = $conn->prepare("
+        SELECT p.*, u.username, u.full_name, u.profile_photo, c.name as category_name, c.slug as category_slug
+        FROM posts p
+        LEFT JOIN users u ON p.author_id = u.id
+        LEFT JOIN categories c ON p.category_id = c.id
+        WHERE p.status = 'published' 
+        AND (p.title LIKE ? OR p.content LIKE ? OR p.excerpt LIKE ?)
+        ORDER BY p.published_at DESC, p.created_at DESC
+        LIMIT ? OFFSET ?
+    ");
+    
+    $stmt->bind_param("sssii", $search_term, $search_term, $search_term, $limit, $offset);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $posts = [];
+    
+    while ($row = $result->fetch_assoc()) {
+        $posts[] = $row;
+    }
+    
+    $stmt->close();
+    return $posts;
+}
+
 // Get popular posts (based on views and likes)
 function getPopularPosts($limit = 4) {
     $conn = getDB();

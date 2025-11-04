@@ -2,6 +2,7 @@
 require_once __DIR__ . '/includes/header.php';
 
 $category_filter = isset($_GET['category']) ? $_GET['category'] : null;
+$search_query = isset($_GET['search']) ? trim($_GET['search']) : null;
 
 // Get featured posts (hero section)
 $featured_posts = getPosts(1, 0, $category_filter, 'published');
@@ -16,9 +17,15 @@ $latest_posts = getPosts(5, 0, $category_filter, 'published');
 // Get posts for left column
 $left_posts = getPosts(2, 1, $category_filter, 'published');
 
+// Handle search
+$search_results = [];
+if ($search_query) {
+    $search_results = searchPosts($search_query, 20, 0);
+}
+
 // Get posts by category
 $category_sections = [];
-if (!$category_filter) {
+if (!$category_filter && !$search_query) {
     $categories = getCategories();
     foreach ($categories as $cat) {
         $cat_posts = getPosts(5, 0, $cat['slug'], 'published');
@@ -51,7 +58,14 @@ $authors = getAuthors(6);
 ?>
 
 <div class="container mx-auto px-4 py-8">
-    <?php if ($category_filter && $selected_cat): ?>
+    <?php if ($search_query): ?>
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Search Results</h1>
+            <p class="text-gray-600">Searching for: "<strong><?php echo htmlspecialchars($search_query); ?></strong>"</p>
+            <p class="text-gray-500 text-sm mt-1">Found <?php echo count($search_results); ?> result(s)</p>
+            <a href="index.php" class="text-blue-600 hover:text-blue-700 text-sm mt-2 inline-block">← Back to all posts</a>
+        </div>
+    <?php elseif ($category_filter && $selected_cat): ?>
         <div class="mb-8">
             <h1 class="text-3xl font-bold text-gray-900 mb-2"><?php echo htmlspecialchars($selected_cat['name']); ?></h1>
             <?php if ($selected_cat['description']): ?>
@@ -60,6 +74,48 @@ $authors = getAuthors(6);
             <a href="index.php" class="text-blue-600 hover:text-blue-700 text-sm mt-2 inline-block">← Back to all posts</a>
         </div>
     <?php endif; ?>
+    
+    <?php if ($search_query): ?>
+        <!-- Search Results -->
+        <?php if (!empty($search_results)): ?>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+                <?php foreach ($search_results as $post): ?>
+                    <article class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
+                        <a href="post.php?slug=<?php echo $post['slug']; ?>">
+                            <img src="<?php echo SITE_URL; ?>/assets/images/<?php echo htmlspecialchars($post['featured_image'] ?? 'default.jpg'); ?>" 
+                                 alt="<?php echo htmlspecialchars($post['title']); ?>"
+                                 class="w-full h-48 object-cover"
+                                 onerror="this.src='<?php echo SITE_URL; ?>/assets/images/default.jpg'">
+                        </a>
+                        <div class="p-5">
+                            <?php if ($post['category_name']): ?>
+                                <span class="text-xs font-semibold text-gray-600 uppercase"><?php echo htmlspecialchars($post['category_name']); ?></span>
+                            <?php endif; ?>
+                            <h3 class="text-lg font-bold text-gray-900 mt-2 mb-2 line-clamp-2">
+                                <a href="post.php?slug=<?php echo $post['slug']; ?>" class="hover:text-blue-600">
+                                    <?php echo htmlspecialchars($post['title']); ?>
+                                </a>
+                            </h3>
+                            <?php if ($post['excerpt']): ?>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2"><?php echo htmlspecialchars(truncate($post['excerpt'], 120)); ?></p>
+                            <?php endif; ?>
+                            <div class="flex items-center justify-between text-xs text-gray-500">
+                                <span><?php echo formatDate($post['published_at'] ?? $post['created_at']); ?></span>
+                                <?php if ($post['full_name']): ?>
+                                    <span>by <?php echo htmlspecialchars($post['full_name']); ?></span>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </article>
+                <?php endforeach; ?>
+            </div>
+        <?php else: ?>
+            <div class="bg-white rounded-lg shadow-md p-12 text-center mb-16">
+                <p class="text-gray-500 text-lg mb-4">No results found for "<strong><?php echo htmlspecialchars($search_query); ?></strong>"</p>
+                <p class="text-gray-400">Try different keywords or <a href="index.php" class="text-blue-600 hover:text-blue-700">browse all posts</a></p>
+            </div>
+        <?php endif; ?>
+    <?php else: ?>
     
     <!-- Main Hero Section -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16">
@@ -357,6 +413,7 @@ $authors = getAuthors(6);
             <?php endforeach; ?>
         </div>
     </section>
+    <?php endif; // End of search results conditional ?>
 </div>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
