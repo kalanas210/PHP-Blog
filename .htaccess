@@ -1,0 +1,24 @@
+# Enable rewrite engine
+RewriteEngine On
+
+# Redirect to index.php if file doesn't exist
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Prevent direct access to sensitive files
+<FilesMatch "^(config|includes|database)">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Allow access to images
+<FilesMatch "\.(jpg|jpeg|png|gif|webp|svg)$">
+    Order allow,deny
+    Allow from all
+</FilesMatch>
+
+# PHP settings
+php_value upload_max_filesize 5M
+php_value post_max_size 5M
+php_value max_execution_time 300
+php_value max_input_time 300
