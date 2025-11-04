@@ -122,6 +122,40 @@ function getPosts($limit = 10, $offset = 0, $category = null, $status = 'publish
     return $posts;
 }
 
+// Get popular posts (based on views and likes)
+function getPopularPosts($limit = 4) {
+    $conn = getDB();
+    $stmt = $conn->prepare("
+        SELECT p.*, 
+               u.username, 
+               u.full_name, 
+               u.profile_photo, 
+               c.name as category_name, 
+               c.slug as category_slug,
+               COUNT(DISTINCT pl.id) as likes_count,
+               p.views
+        FROM posts p
+        LEFT JOIN users u ON p.author_id = u.id
+        LEFT JOIN categories c ON p.category_id = c.id
+        LEFT JOIN post_likes pl ON p.id = pl.post_id
+        WHERE p.status = 'published'
+        GROUP BY p.id
+        ORDER BY (p.views * 1 + COUNT(DISTINCT pl.id) * 5) DESC, p.published_at DESC
+        LIMIT ?
+    ");
+    $stmt->bind_param("i", $limit);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $posts = [];
+    
+    while ($row = $result->fetch_assoc()) {
+        $posts[] = $row;
+    }
+    
+    $stmt->close();
+    return $posts;
+}
+
 // Check if user liked a post
 function hasUserLiked($post_id, $user_id) {
     $conn = getDB();

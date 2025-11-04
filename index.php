@@ -7,6 +7,9 @@ $category_filter = isset($_GET['category']) ? $_GET['category'] : null;
 $featured_posts = getPosts(1, 0, null, 'published');
 $featured_post = !empty($featured_posts) ? $featured_posts[0] : null;
 
+// Get popular posts (most popular section)
+$popular_posts = getPopularPosts(4);
+
 // Get latest posts for sidebar
 $latest_posts = getPosts(5, 0, null, 'published');
 
@@ -134,6 +137,54 @@ $authors = getAuthors(6);
         </div>
     </div>
     
+    <!-- Most Popular Posts Section -->
+    <?php if (!empty($popular_posts)): ?>
+        <section class="mb-16">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold text-gray-900">Most Popular Posts</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <?php foreach ($popular_posts as $post): ?>
+                    <article class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
+                        <a href="post.php?slug=<?php echo $post['slug']; ?>">
+                            <img src="<?php echo SITE_URL; ?>/assets/images/<?php echo htmlspecialchars($post['featured_image'] ?? 'default.jpg'); ?>" 
+                                 alt="<?php echo htmlspecialchars($post['title']); ?>"
+                                 class="w-full h-48 object-cover"
+                                 onerror="this.src='<?php echo SITE_URL; ?>/assets/images/default.jpg'">
+                        </a>
+                        <div class="p-5">
+                            <?php if ($post['category_name']): ?>
+                                <span class="text-xs font-semibold text-gray-600 uppercase"><?php echo htmlspecialchars($post['category_name']); ?></span>
+                            <?php endif; ?>
+                            <h3 class="text-lg font-bold text-gray-900 mt-2 mb-2 line-clamp-2">
+                                <a href="post.php?slug=<?php echo $post['slug']; ?>" class="hover:text-blue-600">
+                                    <?php echo htmlspecialchars($post['title']); ?>
+                                </a>
+                            </h3>
+                            <?php if ($post['excerpt']): ?>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2"><?php echo htmlspecialchars(truncate($post['excerpt'], 100)); ?></p>
+                            <?php endif; ?>
+                            <div class="flex items-center justify-between text-xs text-gray-500">
+                                <span><?php echo formatDate($post['published_at'] ?? $post['created_at']); ?></span>
+                                <div class="flex items-center gap-3">
+                                    <span class="flex items-center gap-1">
+                                        <i class="fas fa-eye"></i>
+                                        <?php echo number_format($post['views'] ?? 0); ?>
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <i class="fas fa-heart"></i>
+                                        <?php echo number_format($post['likes_count'] ?? 0); ?>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                <?php endforeach; ?>
+            </div>
+        </section>
+    <?php endif; ?>
+    
     <!-- Category Sections -->
     <?php foreach ($category_sections as $cat_name => $cat_data): ?>
         <section class="mb-16">
@@ -144,26 +195,88 @@ $authors = getAuthors(6);
             
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
                 <!-- Large Card on Left -->
-                <?php if (!empty($cat_data['posts'])): ?>
+                <?php if (!empty($cat_data['posts'])): 
+                    $main_post = $cat_data['posts'][0];
+                    $main_post_likes = getPostLikesCount($main_post['id']);
+                    $main_post_views = $main_post['views'] ?? 0;
+                    // Estimate read time (average reading speed: 200 words per minute)
+                    $word_count = str_word_count(strip_tags($main_post['content'] ?? ''));
+                    $read_time = max(1, round($word_count / 200));
+                ?>
                     <div class="lg:col-span-2">
-                        <article class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow h-full">
-                            <a href="post.php?slug=<?php echo $cat_data['posts'][0]['slug']; ?>">
-                                <img src="<?php echo SITE_URL; ?>/assets/images/<?php echo htmlspecialchars($cat_data['posts'][0]['featured_image'] ?? 'default.jpg'); ?>" 
-                                     alt="<?php echo htmlspecialchars($cat_data['posts'][0]['title']); ?>"
+                        <article class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow h-full flex flex-col">
+                            <a href="post.php?slug=<?php echo $main_post['slug']; ?>">
+                                <img src="<?php echo SITE_URL; ?>/assets/images/<?php echo htmlspecialchars($main_post['featured_image'] ?? 'default.jpg'); ?>" 
+                                     alt="<?php echo htmlspecialchars($main_post['title']); ?>"
                                      class="w-full h-64 object-cover"
                                      onerror="this.src='<?php echo SITE_URL; ?>/assets/images/default.jpg'">
                             </a>
-                            <div class="p-6">
-                                <span class="text-xs font-semibold text-gray-600 uppercase"><?php echo htmlspecialchars($cat_data['posts'][0]['category_name'] ?? $cat_name); ?></span>
-                                <h3 class="text-xl font-bold text-gray-900 mt-2 mb-3">
-                                    <a href="post.php?slug=<?php echo $cat_data['posts'][0]['slug']; ?>" class="hover:text-blue-600">
-                                        <?php echo htmlspecialchars($cat_data['posts'][0]['title']); ?>
+                            <div class="p-6 flex-1 flex flex-col">
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="text-xs font-semibold text-gray-600 uppercase"><?php echo htmlspecialchars($main_post['category_name'] ?? $cat_name); ?></span>
+                                    <span class="text-xs text-gray-400">•</span>
+                                    <span class="text-xs text-gray-500"><?php echo $read_time; ?> min read</span>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900 mb-3">
+                                    <a href="post.php?slug=<?php echo $main_post['slug']; ?>" class="hover:text-blue-600">
+                                        <?php echo htmlspecialchars($main_post['title']); ?>
                                     </a>
                                 </h3>
-                                <?php if ($cat_data['posts'][0]['excerpt']): ?>
-                                    <p class="text-gray-600 text-sm mb-3"><?php echo htmlspecialchars(truncate($cat_data['posts'][0]['excerpt'], 120)); ?></p>
+                                <?php if ($main_post['excerpt']): ?>
+                                    <p class="text-gray-600 text-sm mb-3 leading-relaxed font-medium"><?php echo htmlspecialchars(truncate($main_post['excerpt'], 250)); ?></p>
                                 <?php endif; ?>
-                                <p class="text-sm text-gray-500"><?php echo formatDate($cat_data['posts'][0]['published_at'] ?? $cat_data['posts'][0]['created_at']); ?></p>
+                                
+                                <!-- Post Content Preview -->
+                                <?php if ($main_post['content']): 
+                                    // Strip HTML tags and get clean text
+                                    $content_text = strip_tags($main_post['content']);
+                                    // Remove extra whitespace
+                                    $content_text = preg_replace('/\s+/', ' ', $content_text);
+                                    // Get first 400 characters of content (after excerpt)
+                                    $content_preview = mb_substr($content_text, 0, 400);
+                                    if (strlen($content_text) > 400) {
+                                        $content_preview .= '...';
+                                    }
+                                ?>
+                                    <div class="text-gray-600 text-sm mb-4 leading-relaxed line-clamp-6">
+                                        <?php echo nl2br(htmlspecialchars($content_preview)); ?>
+                                    </div>
+                                <?php endif; ?>
+                                
+                                <!-- Author Info -->
+                                <?php if ($main_post['full_name'] || $main_post['username']): ?>
+                                    <div class="flex items-center gap-3 mb-4">
+                                        <?php if ($main_post['profile_photo']): ?>
+                                            <img src="<?php echo SITE_URL; ?>/assets/images/<?php echo htmlspecialchars($main_post['profile_photo']); ?>" 
+                                                 alt="<?php echo htmlspecialchars($main_post['full_name'] ?? $main_post['username']); ?>"
+                                                 class="w-10 h-10 rounded-full object-cover"
+                                                 onerror="this.src='<?php echo SITE_URL; ?>/assets/images/default-avatar.png'">
+                                        <?php endif; ?>
+                                        <div>
+                                            <p class="text-sm font-medium text-gray-900"><?php echo htmlspecialchars($main_post['full_name'] ?? $main_post['username']); ?></p>
+                                            <p class="text-xs text-gray-500"><?php echo formatDate($main_post['published_at'] ?? $main_post['created_at']); ?></p>
+                                        </div>
+                                    </div>
+                                <?php else: ?>
+                                    <p class="text-sm text-gray-500 mb-4"><?php echo formatDate($main_post['published_at'] ?? $main_post['created_at']); ?></p>
+                                <?php endif; ?>
+                                
+                                <!-- Stats and Read More -->
+                                <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
+                                    <div class="flex items-center gap-4 text-xs text-gray-500">
+                                        <span class="flex items-center gap-1">
+                                            <i class="fas fa-eye"></i>
+                                            <?php echo number_format($main_post_views); ?> views
+                                        </span>
+                                        <span class="flex items-center gap-1">
+                                            <i class="fas fa-heart"></i>
+                                            <?php echo number_format($main_post_likes); ?> likes
+                                        </span>
+                                    </div>
+                                    <a href="post.php?slug=<?php echo $main_post['slug']; ?>" class="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center gap-1">
+                                        Read More <i class="fas fa-arrow-right text-xs"></i>
+                                    </a>
+                                </div>
                             </div>
                         </article>
                     </div>
