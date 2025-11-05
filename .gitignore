@@ -1,0 +1,40 @@
+# Configuration files with sensitive data
+config/config.php
+
+# Uploaded files (user content)
+assets/images/*.jpg
+assets/images/*.jpeg
+assets/images/*.png
+assets/images/*.gif
+assets/images/*.webp
+assets/images/profile_*.jpg
+assets/images/profile_*.jpeg
+assets/images/profile_*.png
+assets/images/profile_*.webp
+
+# Keep default images
+!assets/images/default-avatar.png
+!assets/images/logo.png
+!assets/images/default.jpg
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.bak
+*.old
+

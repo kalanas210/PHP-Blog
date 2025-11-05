@@ -26,7 +26,12 @@ CREATE TABLE IF NOT EXISTS categories (
     name VARCHAR(50) UNIQUE NOT NULL,
     slug VARCHAR(50) UNIQUE NOT NULL,
     description TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    featured_homepage_order INT DEFAULT NULL,
+    show_in_header TINYINT(1) DEFAULT 0,
+    header_order INT DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_featured_homepage (featured_homepage_order),
+    INDEX idx_show_in_header (show_in_header, header_order)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Posts Table
