@@ -111,48 +111,70 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(response => response.json())
             .then(data => {
+                console.log('Comment API response:', data); // Debug log
                 if (data.success) {
-                    // Add comment to list
-                    const commentsList = document.getElementById('comments-list');
-                    if (commentsList && data.comment) {
-                        const commentDiv = document.createElement('div');
-                        commentDiv.className = 'border-b border-gray-200 pb-4';
-                        
-                        const profilePhoto = data.comment.profile_photo || 'default-avatar.png';
-                        const name = data.comment.name || data.comment.username || 'Anonymous';
-                        
-                        const escapedContent = data.comment.content.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
-                        const escapedName = name.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                        commentDiv.innerHTML = `
-                            <div class="flex items-start gap-4">
-                                <img src="${baseUrl}/assets/images/${profilePhoto}" 
-                                     alt="${escapedName}"
-                                     class="w-10 h-10 rounded-full object-cover"
-                                     onerror="this.src='${baseUrl}/assets/images/default-avatar.png'">
-                                <div class="flex-1">
-                                    <div class="flex items-center gap-2 mb-2">
-                                        <h4 class="font-semibold text-gray-900">${escapedName}</h4>
-                                        <span class="text-xs text-gray-500">Just now</span>
+                    // Show success message
+                    if (data.message) {
+                        alert(data.message);
+                    }
+                    
+                    // Add comment to list only if approved
+                    if (data.approved && data.comment) {
+                        console.log('Comment data:', data.comment); // Debug log
+                        console.log('Comment content:', data.comment.content); // Debug log
+                        const commentsList = document.getElementById('comments-list');
+                        if (commentsList) {
+                            const commentDiv = document.createElement('div');
+                            commentDiv.className = 'border-b border-gray-200 pb-4';
+                            
+                            const profilePhoto = data.comment.profile_photo || 'default-avatar.png';
+                            const name = data.comment.name || data.comment.username || 'Anonymous';
+                            
+                            // Ensure content exists and is a string - handle all edge cases
+                            let commentContent = '';
+                            if (data.comment.content !== undefined && data.comment.content !== null) {
+                                commentContent = String(data.comment.content);
+                            }
+                            console.log('Processed comment content:', commentContent, 'Type:', typeof commentContent);
+                            if (!commentContent || commentContent.trim() === '' || commentContent === '0') {
+                                console.error('Comment content is empty, invalid, or zero:', data.comment);
+                                alert('Error: Comment content is missing or invalid. Please check the browser console for details.');
+                                return;
+                            }
+                            
+                            const escapedContent = commentContent.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
+                            const escapedName = String(name).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                            commentDiv.innerHTML = `
+                                <div class="flex items-start gap-4">
+                                    <img src="${baseUrl}/assets/images/${profilePhoto}" 
+                                         alt="${escapedName}"
+                                         class="w-10 h-10 rounded-full object-cover"
+                                         onerror="this.src='${baseUrl}/assets/images/default-avatar.png'">
+                                    <div class="flex-1">
+                                        <div class="flex items-center gap-2 mb-2">
+                                            <h4 class="font-semibold text-gray-900">${escapedName}</h4>
+                                            <span class="text-xs text-gray-500">Just now</span>
+                                        </div>
+                                        <p class="text-gray-700">${escapedContent}</p>
                                     </div>
-                                    <p class="text-gray-700">${escapedContent}</p>
                                 </div>
-                            </div>
-                        `;
-                        
-                        // Remove "No comments yet" message if exists
-                        const noComments = commentsList.querySelector('p');
-                        if (noComments && noComments.textContent.includes('No comments')) {
-                            noComments.remove();
-                        }
-                        
-                        commentsList.appendChild(commentDiv);
-                        
-                        // Update comment count
-                        const commentCount = document.querySelector('h3');
-                        if (commentCount) {
-                            const match = commentCount.textContent.match(/(\d+)/);
-                            const currentCount = match ? parseInt(match[1]) : 0;
-                            commentCount.textContent = `Comments (${currentCount + 1})`;
+                            `;
+                            
+                            // Remove "No comments yet" message if exists
+                            const noComments = commentsList.querySelector('p');
+                            if (noComments && noComments.textContent.includes('No comments')) {
+                                noComments.remove();
+                            }
+                            
+                            commentsList.appendChild(commentDiv);
+                            
+                            // Update comment count
+                            const commentCount = document.getElementById('comments-heading');
+                            if (commentCount) {
+                                const match = commentCount.textContent.match(/Comments\s*\((\d+)\)/);
+                                const currentCount = match ? parseInt(match[1], 10) : 0;
+                                commentCount.textContent = `Comments (${currentCount + 1})`;
+                            }
                         }
                     }
                     

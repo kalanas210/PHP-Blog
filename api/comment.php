@@ -17,6 +17,9 @@ if (!$post_id || empty($content)) {
     exit;
 }
 
+// Log received content for debugging (remove in production if needed)
+error_log("Comment API: Received content: " . substr($content, 0, 100));
+
 $conn = getDB();
 
 // Check if user is banned (if logged in)
@@ -67,15 +70,15 @@ if (isLoggedIn()) {
 }
 
 $stmt = $conn->prepare("INSERT INTO comments (post_id, user_id, name, email, content, approved) VALUES (?, ?, ?, ?, ?, ?)");
-$stmt->bind_param("iissii", $post_id, $user_id, $name, $email, $content, $approved);
+$stmt->bind_param("iisssi", $post_id, $user_id, $name, $email, $content, $approved);
 
 if ($stmt->execute()) {
     $comment_id = $stmt->insert_id;
     $stmt->close();
     
-    // Get the new comment
+    // Get the new comment with explicit field selection
     $stmt = $conn->prepare("
-        SELECT c.*, u.username, u.profile_photo
+        SELECT c.id, c.post_id, c.user_id, c.name, c.email, c.content, c.approved, c.created_at, u.username, u.profile_photo
         FROM comments c
         LEFT JOIN users u ON c.user_id = u.id
         WHERE c.id = ?
@@ -85,6 +88,11 @@ if ($stmt->execute()) {
     $result = $stmt->get_result();
     $comment = $result->fetch_assoc();
     $stmt->close();
+    
+    // Ensure content is properly set
+    if (!isset($comment['content']) || $comment['content'] === null) {
+        error_log("Warning: Comment content is missing for comment ID: " . $comment_id);
+    }
     
     $message = $approved ? 'Comment posted successfully' : 'Comment submitted and pending approval';
     

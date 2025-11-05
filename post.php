@@ -96,7 +96,7 @@ $page_title = $post['title'];
             
             <!-- Comments Section -->
             <div class="border-t border-gray-200 pt-6 mt-6">
-                <h3 class="text-xl font-bold text-gray-900 mb-4">Comments (<?php echo count($comments); ?>)</h3>
+                <h3 id="comments-heading" class="text-xl font-bold text-gray-900 mb-4">Comments (<?php echo count($comments); ?>)</h3>
                 
                 <!-- Comment Form -->
                 <form id="comment-form" class="mb-8">
