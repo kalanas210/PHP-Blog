@@ -8,11 +8,26 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function toggleMobileMenu() {
         if (mobileMenu) {
-            mobileMenu.classList.toggle('hidden');
-            // Prevent body scroll when menu is open
-            if (!mobileMenu.classList.contains('hidden')) {
+            const isHidden = mobileMenu.classList.contains('hidden');
+            if (isHidden) {
+                // Calculate header height for proper positioning
+                const header = document.querySelector('header');
+                if (header) {
+                    const headerHeight = header.offsetHeight;
+                    mobileMenu.style.top = headerHeight + 'px';
+                }
+                // Remove hidden class to show menu
+                mobileMenu.classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
+                // Focus search input when menu opens
+                setTimeout(function() {
+                    const searchInputMobile = document.getElementById('search-input-mobile');
+                    if (searchInputMobile) {
+                        searchInputMobile.focus();
+                    }
+                }, 100);
             } else {
+                mobileMenu.classList.add('hidden');
                 document.body.style.overflow = '';
             }
         }
@@ -60,23 +75,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Mobile search toggle
-    const searchToggleBtnMobile = document.getElementById('search-toggle-btn-mobile');
-    const searchFormMobileContainer = document.getElementById('search-form-mobile-container');
-    const searchInputMobile = document.getElementById('search-input-mobile');
-    
-    if (searchToggleBtnMobile && searchFormMobileContainer) {
-        searchToggleBtnMobile.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            searchFormMobileContainer.classList.toggle('hidden');
-            if (!searchFormMobileContainer.classList.contains('hidden')) {
-                setTimeout(function() {
-                    if (searchInputMobile) {
-                        searchInputMobile.focus();
-                    }
-                }, 100);
-            }
+    // Close mobile menu when search form is submitted
+    const searchFormMobile = document.getElementById('search-form-mobile');
+    if (searchFormMobile) {
+        searchFormMobile.addEventListener('submit', function() {
+            closeMobileMenu();
         });
     }
     

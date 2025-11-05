@@ -134,7 +134,7 @@ require_once __DIR__ . '/../includes/header.php';
         </div>
         
         <div class="flex gap-4">
-            <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+            <button type="submit" class="px-6 py-2 bg-black text-white rounded hover:bg-gray-900">
                 Update Profile
             </button>
             <a href="index.php" class="px-6 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">

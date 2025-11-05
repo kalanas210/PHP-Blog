@@ -54,3 +54,8 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
+/* Mobile menu styles */
+#mobile-menu {
+    /* Menu will be positioned dynamically via JavaScript */
+}

@@ -95,7 +95,7 @@ $logout_url = $is_in_dashboard || $is_in_admin ? SITE_URL . '/logout.php' : 'log
         </div>
         
         <!-- Navigation Row 2 -->
-        <nav class="border-t border-gray-200 relative">
+        <nav class="border-t border-gray-200 relative" id="main-nav">
             <div class="container mx-auto px-4">
                 <!-- Desktop Navigation -->
                 <div class="hidden lg:flex items-center justify-center">
@@ -160,41 +160,30 @@ $logout_url = $is_in_dashboard || $is_in_admin ? SITE_URL . '/logout.php' : 'log
                         </div>
                     </div>
                 </div>
-                
-                <!-- Mobile Navigation -->
-                <div class="lg:hidden flex items-center justify-between py-3">
-                    <a href="<?php echo $home_url; ?>#newsletter" class="text-gray-700 hover:text-gray-900 font-medium text-sm">Newsletter</a>
-                    <div class="flex items-center gap-3">
-                        <button type="button" id="search-toggle-btn-mobile" class="text-gray-700 hover:text-gray-900 focus:outline-none cursor-pointer p-2">
-                            <i class="fas fa-search text-lg"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Mobile Search Form -->
-                <div id="search-form-mobile-container" class="lg:hidden hidden pb-3">
-                    <form method="GET" action="<?php echo $home_url; ?>" id="search-form-mobile" class="flex items-center w-full">
-                        <input type="text" 
-                               name="search" 
-                               id="search-input-mobile"
-                               placeholder="Search..." 
-                               class="flex-1 px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
-                               autocomplete="off">
-                        <button type="submit" class="px-4 py-2 bg-gray-700 text-white rounded-r-lg hover:bg-gray-800 focus:outline-none">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </form>
-                </div>
             </div>
             
             <!-- Mobile Menu -->
-            <div id="mobile-menu" class="lg:hidden hidden fixed top-full left-0 w-full bg-white border-b border-gray-200 shadow-lg z-50 max-h-[80vh] overflow-y-auto">
+            <div id="mobile-menu" class="lg:hidden hidden fixed left-0 w-full bg-white border-b border-gray-200 shadow-lg z-50 max-h-[80vh] overflow-y-auto">
                 <div class="container mx-auto px-4">
                     <div class="flex items-center justify-between py-3 border-b border-gray-200">
                         <h3 class="font-semibold text-gray-900">Menu</h3>
                         <button id="mobile-menu-close" class="text-gray-700 hover:text-gray-900 p-2">
                             <i class="fas fa-times text-xl"></i>
                         </button>
+                    </div>
+                    <!-- Mobile Search Form -->
+                    <div class="px-4 py-3 border-b border-gray-200">
+                        <form method="GET" action="<?php echo $home_url; ?>" id="search-form-mobile" class="flex items-center w-full">
+                            <input type="text" 
+                                   name="search" 
+                                   id="search-input-mobile"
+                                   placeholder="Search..." 
+                                   class="flex-1 px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                   autocomplete="off">
+                            <button type="submit" class="px-4 py-2 bg-gray-700 text-white rounded-r-lg hover:bg-gray-800 focus:outline-none">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </form>
                     </div>
                     <ul class="py-4">
                         <li><a href="<?php echo $home_url; ?>" class="block px-4 py-3 text-gray-700 hover:bg-gray-100 font-medium">Home</a></li>
