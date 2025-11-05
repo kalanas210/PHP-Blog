@@ -26,7 +26,8 @@ if ($search_query) {
 // Get posts by category
 $category_sections = [];
 if (!$category_filter && !$search_query) {
-    $categories = getCategories();
+    // Get only featured homepage categories (5 categories)
+    $categories = getCategories('homepage');
     foreach ($categories as $cat) {
         $cat_posts = getPosts(5, 0, $cat['slug'], 'published');
         if (!empty($cat_posts)) {
@@ -55,6 +56,9 @@ if (!$category_filter && !$search_query) {
 }
 
 $authors = getAuthors(7);
+
+// Get popular categories for sidebar
+$popular_categories = getPopularCategories(5);
 ?>
 
 <div class="container mx-auto px-4 py-8">
@@ -145,32 +149,55 @@ $authors = getAuthors(7);
         </div>
         
         <!-- Center Column: Hero Post -->
-        <div class="lg:col-span-6">
+        <div class="lg:col-span-6 flex">
             <?php if ($featured_post): ?>
-                <article class="bg-white rounded-lg overflow-hidden shadow-lg">
+                <article class="bg-white rounded-lg overflow-hidden shadow-lg flex flex-col w-full">
                     <a href="post.php?slug=<?php echo $featured_post['slug']; ?>">
                         <img src="<?php echo SITE_URL; ?>/assets/images/<?php echo htmlspecialchars($featured_post['featured_image'] ?? 'default.jpg'); ?>" 
                              alt="<?php echo htmlspecialchars($featured_post['title']); ?>"
                              class="w-full h-96 object-cover"
                              onerror="this.src='<?php echo SITE_URL; ?>/assets/images/default.jpg'">
                     </a>
-                    <div class="p-6">
+                    <div class="p-4 flex flex-col">
                         <?php if ($featured_post['category_name']): ?>
                             <span class="text-xs font-semibold text-gray-600 uppercase"><?php echo htmlspecialchars($featured_post['category_name']); ?></span>
                         <?php endif; ?>
-                        <h2 class="text-3xl font-bold text-gray-900 mt-3 mb-4">
+                        <h2 class="text-3xl font-bold text-gray-900 mt-2 mb-3">
                             <a href="post.php?slug=<?php echo $featured_post['slug']; ?>" class="hover:text-blue-600">
                                 <?php echo htmlspecialchars($featured_post['title']); ?>
                             </a>
                         </h2>
                         <?php if ($featured_post['excerpt']): ?>
-                            <p class="text-gray-600 mb-4"><?php echo htmlspecialchars($featured_post['excerpt']); ?></p>
+                            <p class="text-gray-600 mb-3 text-lg leading-relaxed"><?php echo htmlspecialchars($featured_post['excerpt']); ?></p>
                         <?php endif; ?>
-                        <div class="flex items-center justify-between">
-                            <p class="text-sm text-gray-500"><?php echo formatDate($featured_post['published_at'] ?? $featured_post['created_at']); ?></p>
-                            <?php if ($featured_post['full_name']): ?>
-                                <p class="text-sm text-gray-600"><?php echo htmlspecialchars($featured_post['full_name']); ?></p>
-                            <?php endif; ?>
+                        
+                        <!-- Post Content Preview -->
+                        <?php if ($featured_post['content']): 
+                            // Strip HTML tags and get clean text
+                            $content_text = strip_tags($featured_post['content']);
+                            // Remove extra whitespace
+                            $content_text = preg_replace('/\s+/', ' ', $content_text);
+                            // Get first 600 characters of content (after excerpt) - increased for more lines
+                            $content_preview = mb_substr($content_text, 0, 600);
+                            if (strlen($content_text) > 600) {
+                                $content_preview .= '...';
+                            }
+                        ?>
+                            <div class="text-gray-600 text-sm mb-3 leading-relaxed line-clamp-10">
+                                <?php echo htmlspecialchars($content_preview); ?>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <div class="flex items-center justify-between pt-3 border-t border-gray-100 mt-3">
+                            <div class="flex items-center gap-4">
+                                <p class="text-sm text-gray-500"><?php echo formatDate($featured_post['published_at'] ?? $featured_post['created_at']); ?></p>
+                                <?php if ($featured_post['full_name']): ?>
+                                    <p class="text-sm text-gray-600">by <?php echo htmlspecialchars($featured_post['full_name']); ?></p>
+                                <?php endif; ?>
+                            </div>
+                            <a href="post.php?slug=<?php echo $featured_post['slug']; ?>" class="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center gap-1">
+                                Read More <i class="fas fa-arrow-right text-xs"></i>
+                            </a>
                         </div>
                     </div>
                 </article>
@@ -182,7 +209,8 @@ $authors = getAuthors(7);
         </div>
         
         <!-- Right Column: Latest Posts Sidebar -->
-        <div class="lg:col-span-3">
+        <div class="lg:col-span-3 space-y-6">
+            <!-- Latest Posts -->
             <div class="bg-white rounded-lg shadow-sm p-6">
                 <h3 class="text-lg font-bold text-gray-900 mb-4 uppercase">Latest</h3>
                 <div class="space-y-4">
@@ -200,6 +228,28 @@ $authors = getAuthors(7);
                     <?php endforeach; ?>
                 </div>
             </div>
+            
+            <!-- Categories Section -->
+            <?php if (!empty($popular_categories)): ?>
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4 uppercase">Categories</h3>
+                    <ul class="space-y-2">
+                        <?php foreach ($popular_categories as $cat): ?>
+                            <li>
+                                <a href="index.php?category=<?php echo $cat['slug']; ?>" class="flex items-center text-gray-700 hover:text-blue-600 transition-colors">
+                                    <span class="mr-2 text-gray-400">•</span>
+                                    <span><?php echo htmlspecialchars($cat['name']); ?></span>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                    <div class="mt-4 pt-4 border-t border-gray-200">
+                        <a href="index.php" class="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center">
+                            See All <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
     

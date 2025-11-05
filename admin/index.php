@@ -44,7 +44,7 @@ $page_title = 'Admin Dashboard';
     </div>
     
     <!-- Quick Actions -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <a href="posts.php" class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
             <h2 class="text-xl font-bold text-gray-900 mb-2">Manage Posts</h2>
             <p class="text-gray-600">Approve, unpublish, or delete posts</p>
@@ -52,6 +52,10 @@ $page_title = 'Admin Dashboard';
         <a href="users.php" class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
             <h2 class="text-xl font-bold text-gray-900 mb-2">Manage Users</h2>
             <p class="text-gray-600">Ban users, grant permissions, manage roles</p>
+        </a>
+        <a href="categories.php" class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
+            <h2 class="text-xl font-bold text-gray-900 mb-2">Manage Categories</h2>
+            <p class="text-gray-600">Add, edit, and configure categories</p>
         </a>
     </div>
     

@@ -44,14 +44,14 @@ $page_title = 'Contact Us';
                                 <i class="fas fa-phone text-gray-400"></i>
                                 <h3 class="font-semibold">Phone</h3>
                             </div>
-                            <p class="text-gray-300 text-sm">+1 (555) 123-4567</p>
+                            <p class="text-gray-300 text-sm">+94 77 123 4567</p>
                         </div>
                         <div>
                             <div class="flex items-center gap-3 mb-2">
                                 <i class="fas fa-map-marker-alt text-gray-400"></i>
                                 <h3 class="font-semibold">Address</h3>
                             </div>
-                            <p class="text-gray-300 text-sm">123 News Street<br>City, State 12345<br>Country</p>
+                            <p class="text-gray-300 text-sm">115/2<br>John Rodrigo Mawatha<br>Moratuwa, Sri Lanka</p>
                         </div>
                         <div class="pt-4 border-t border-gray-700">
                             <h3 class="font-semibold mb-3">Follow Us</h3>

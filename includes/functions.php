@@ -233,15 +233,65 @@ function getComments($post_id) {
 }
 
 // Get all categories
-function getCategories() {
+function getCategories($type = 'all') {
     $conn = getDB();
-    $result = $conn->query("SELECT * FROM categories ORDER BY name ASC");
+    
+    // Check if new columns exist, if not, use fallback
+    $columns_check = $conn->query("SHOW COLUMNS FROM categories LIKE 'featured_homepage_order'");
+    $has_new_columns = $columns_check && $columns_check->num_rows > 0;
+    
+    $query = "SELECT * FROM categories";
+    
+    if ($type === 'homepage' && $has_new_columns) {
+        $query .= " WHERE featured_homepage_order IS NOT NULL ORDER BY featured_homepage_order ASC";
+    } elseif ($type === 'header' && $has_new_columns) {
+        $query .= " WHERE show_in_header = 1 ORDER BY header_order ASC";
+    } else {
+        $query .= " ORDER BY name ASC";
+    }
+    
+    $result = $conn->query($query);
+    
+    // Handle query errors
+    if ($result === false) {
+        // If query failed, try simpler query
+        $result = $conn->query("SELECT * FROM categories ORDER BY name ASC");
+        if ($result === false) {
+            return [];
+        }
+    }
+    
     $categories = [];
     
     while ($row = $result->fetch_assoc()) {
         $categories[] = $row;
     }
     
+    return $categories;
+}
+
+// Get popular categories by post count
+function getPopularCategories($limit = 5) {
+    $conn = getDB();
+    $stmt = $conn->prepare("
+        SELECT c.*, COUNT(p.id) as post_count
+        FROM categories c
+        LEFT JOIN posts p ON c.id = p.category_id AND p.status = 'published'
+        GROUP BY c.id
+        HAVING post_count > 0
+        ORDER BY post_count DESC, c.name ASC
+        LIMIT ?
+    ");
+    $stmt->bind_param("i", $limit);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $categories = [];
+    
+    while ($row = $result->fetch_assoc()) {
+        $categories[] = $row;
+    }
+    
+    $stmt->close();
     return $categories;
 }
 

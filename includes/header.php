@@ -89,7 +89,10 @@ $categories = getCategories();
                 <div class="hidden lg:flex items-center justify-center">
                     <ul class="flex items-center gap-6 py-4">
                         <li><a href="index.php" class="text-gray-700 hover:text-gray-900 font-medium">Home</a></li>
-                        <?php foreach ($categories as $cat): 
+                        <?php 
+                        // Get only header categories (6 categories)
+                        $header_cats = getCategories('header');
+                        foreach ($header_cats as $cat): 
                             // Get 3 posts from this category for the dropdown
                             $cat_posts = getPosts(3, 0, $cat['slug'], 'published');
                         ?>
@@ -183,7 +186,10 @@ $categories = getCategories();
                     </div>
                     <ul class="py-4">
                         <li><a href="index.php" class="block px-4 py-3 text-gray-700 hover:bg-gray-100 font-medium">Home</a></li>
-                        <?php foreach ($categories as $cat): ?>
+                        <?php 
+                        // Get only header categories for mobile menu
+                        $header_cats_mobile = getCategories('header');
+                        foreach ($header_cats_mobile as $cat): ?>
                             <li><a href="index.php?category=<?php echo $cat['slug']; ?>" class="block px-4 py-3 text-gray-700 hover:bg-gray-100"><?php echo htmlspecialchars($cat['name']); ?></a></li>
                         <?php endforeach; ?>
                         <li><a href="index.php#authors" class="block px-4 py-3 text-gray-700 hover:bg-gray-100">Author list</a></li>
