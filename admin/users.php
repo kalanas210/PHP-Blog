@@ -29,7 +29,8 @@ if (isset($_GET['unban'])) {
 
 if (isset($_GET['auto_approve'])) {
     $user_id = (int)$_GET['auto_approve'];
-    $value = isset($_GET['enable']) ? 1 : 0;
+    // Check the actual value, not just if it exists
+    $value = (isset($_GET['enable']) && $_GET['enable'] == '1') ? 1 : 0;
     $stmt = $conn->prepare("UPDATE users SET auto_approve = ? WHERE id = ?");
     $stmt->bind_param("ii", $value, $user_id);
     $stmt->execute();

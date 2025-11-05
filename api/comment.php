@@ -18,6 +18,38 @@ if (!$post_id || empty($content)) {
 }
 
 $conn = getDB();
+
+// Check if user is banned (if logged in)
+if (isLoggedIn()) {
+    $current_user = getCurrentUser();
+    if ($current_user && isBanned()) {
+        echo json_encode(['success' => false, 'message' => 'Your account has been banned. You cannot post comments.']);
+        exit;
+    }
+}
+
+// Get post and author info to check auto_approve setting
+$stmt = $conn->prepare("
+    SELECT p.id, p.author_id, u.auto_approve 
+    FROM posts p 
+    LEFT JOIN users u ON p.author_id = u.id 
+    WHERE p.id = ?
+");
+$stmt->bind_param("i", $post_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$post_info = $result->fetch_assoc();
+$stmt->close();
+
+if (!$post_info) {
+    echo json_encode(['success' => false, 'message' => 'Post not found']);
+    exit;
+}
+
+// Determine if comment should be auto-approved
+// Comments are auto-approved if the post author has auto_approve enabled
+$approved = ($post_info['auto_approve'] == 1) ? 1 : 0;
+
 $user_id = null;
 $name = null;
 $email = null;
@@ -34,8 +66,8 @@ if (isLoggedIn()) {
     }
 }
 
-$stmt = $conn->prepare("INSERT INTO comments (post_id, user_id, name, email, content) VALUES (?, ?, ?, ?, ?)");
-$stmt->bind_param("iisss", $post_id, $user_id, $name, $email, $content);
+$stmt = $conn->prepare("INSERT INTO comments (post_id, user_id, name, email, content, approved) VALUES (?, ?, ?, ?, ?, ?)");
+$stmt->bind_param("iissii", $post_id, $user_id, $name, $email, $content, $approved);
 
 if ($stmt->execute()) {
     $comment_id = $stmt->insert_id;
@@ -54,10 +86,13 @@ if ($stmt->execute()) {
     $comment = $result->fetch_assoc();
     $stmt->close();
     
+    $message = $approved ? 'Comment posted successfully' : 'Comment submitted and pending approval';
+    
     echo json_encode([
         'success' => true, 
         'comment' => $comment,
-        'message' => 'Comment posted successfully'
+        'message' => $message,
+        'approved' => $approved
     ]);
 } else {
     $stmt->close();

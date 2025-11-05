@@ -27,6 +27,16 @@ if (isset($_GET['unpublish'])) {
     exit;
 }
 
+if (isset($_GET['publish'])) {
+    $post_id = (int)$_GET['publish'];
+    $stmt = $conn->prepare("UPDATE posts SET status = 'published', published_at = NOW() WHERE id = ?");
+    $stmt->bind_param("i", $post_id);
+    $stmt->execute();
+    $stmt->close();
+    header('Location: posts.php');
+    exit;
+}
+
 if (isset($_GET['delete'])) {
     $post_id = (int)$_GET['delete'];
     $stmt = $conn->prepare("DELETE FROM posts WHERE id = ?");
@@ -84,6 +94,9 @@ require_once __DIR__ . '/../includes/header.php';
             </a>
             <a href="posts.php?status=draft" class="px-4 py-2 <?php echo $status_filter === 'draft' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'; ?> rounded">
                 Draft
+            </a>
+            <a href="posts.php?status=unpublished" class="px-4 py-2 <?php echo $status_filter === 'unpublished' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'; ?> rounded">
+                Unpublished
             </a>
         </div>
     </div>
@@ -149,6 +162,13 @@ require_once __DIR__ . '/../includes/header.php';
                                                class="text-green-600 hover:text-green-700" 
                                                title="Approve">
                                                 <i class="fas fa-check"></i>
+                                            </a>
+                                        <?php endif; ?>
+                                        <?php if ($post['status'] === 'unpublished'): ?>
+                                            <a href="?publish=<?php echo $post['id']; ?>" 
+                                               class="text-green-600 hover:text-green-700" 
+                                               title="Publish">
+                                                <i class="fas fa-eye"></i>
                                             </a>
                                         <?php endif; ?>
                                         <?php if ($post['status'] === 'published'): ?>

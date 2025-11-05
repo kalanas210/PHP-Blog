@@ -110,8 +110,9 @@ function registerUser($username, $email, $password, $full_name = '') {
     
     // Insert new user
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-    $stmt = $conn->prepare("INSERT INTO users (username, email, password, full_name, role) VALUES (?, ?, ?, ?, 'user')");
-    $stmt->bind_param("ssss", $username, $email, $hashed_password, $full_name);
+    $default_avatar = 'default-avatar.png';
+    $stmt = $conn->prepare("INSERT INTO users (username, email, password, full_name, profile_photo, role) VALUES (?, ?, ?, ?, ?, 'user')");
+    $stmt->bind_param("sssss", $username, $email, $hashed_password, $full_name, $default_avatar);
     
     if ($stmt->execute()) {
         $user_id = $stmt->insert_id;
