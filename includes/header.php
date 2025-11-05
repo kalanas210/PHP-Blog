@@ -186,15 +186,15 @@ $logout_url = $is_in_dashboard || $is_in_admin ? SITE_URL . '/logout.php' : 'log
                         </form>
                     </div>
                     <ul class="py-4">
-                        <li><a href="<?php echo $home_url; ?>" class="block px-4 py-3 text-gray-700 hover:bg-gray-100 font-medium">Home</a></li>
+                        <li class="border-b border-gray-200"><a href="<?php echo $home_url; ?>" class="block px-4 py-3 text-gray-700 hover:bg-gray-100 font-medium">Home</a></li>
                         <?php 
                         // Get only header categories for mobile menu
                         $header_cats_mobile = getCategories('header');
                         foreach ($header_cats_mobile as $cat): ?>
-                            <li><a href="<?php echo $home_url; ?>?category=<?php echo $cat['slug']; ?>" class="block px-4 py-3 text-gray-700 hover:bg-gray-100"><?php echo htmlspecialchars($cat['name']); ?></a></li>
+                            <li class="border-b border-gray-200"><a href="<?php echo $home_url; ?>?category=<?php echo $cat['slug']; ?>" class="block px-4 py-3 text-gray-700 hover:bg-gray-100"><?php echo htmlspecialchars($cat['name']); ?></a></li>
                         <?php endforeach; ?>
-                        <li><a href="<?php echo $home_url; ?>#authors" class="block px-4 py-3 text-gray-700 hover:bg-gray-100">Author list</a></li>
-                        <li><a href="<?php echo $home_url; ?>#newsletter" class="block px-4 py-3 text-gray-700 hover:bg-gray-100">Newsletter</a></li>
+                        <li class="border-b border-gray-200"><a href="<?php echo $home_url; ?>#authors" class="block px-4 py-3 text-gray-700 hover:bg-gray-100">Author list</a></li>
+                        <li class="border-b border-gray-200"><a href="<?php echo $home_url; ?>#newsletter" class="block px-4 py-3 text-gray-700 hover:bg-gray-100">Newsletter</a></li>
                     </ul>
                 </div>
             </div>
