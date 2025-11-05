@@ -104,7 +104,7 @@ require_once __DIR__ . '/includes/header.php';
                        class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
             
-            <button type="submit" class="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium">
+            <button type="submit" class="w-full px-4 py-2 bg-black text-white rounded hover:bg-gray-900 font-medium">
                 Sign Up
             </button>
         </form>

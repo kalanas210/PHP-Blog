@@ -270,6 +270,61 @@ function getAuthors($limit = 10) {
     return $authors;
 }
 
+// Get author by ID with stats
+function getAuthorById($author_id) {
+    $conn = getDB();
+    
+    // First get author info
+    $stmt = $conn->prepare("
+        SELECT u.*
+        FROM users u
+        WHERE u.id = ? AND u.role IN ('author', 'admin') AND u.banned = 0
+    ");
+    $stmt->bind_param("i", $author_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $author = $result->fetch_assoc();
+    $stmt->close();
+    
+    if (!$author) {
+        return null;
+    }
+    
+    // Get stats
+    $stmt = $conn->prepare("
+        SELECT 
+            COUNT(DISTINCT p.id) as post_count,
+            COALESCE(SUM(p.views), 0) as total_views
+        FROM posts p
+        WHERE p.author_id = ? AND p.status = 'published'
+    ");
+    $stmt->bind_param("i", $author_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stats = $result->fetch_assoc();
+    $stmt->close();
+    
+    // Get total likes separately
+    $stmt = $conn->prepare("
+        SELECT COUNT(*) as total_likes
+        FROM post_likes pl
+        INNER JOIN posts p ON pl.post_id = p.id
+        WHERE p.author_id = ? AND p.status = 'published'
+    ");
+    $stmt->bind_param("i", $author_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $likes = $result->fetch_assoc();
+    $stmt->close();
+    
+    // Merge stats with author info
+    $author['post_count'] = $stats['post_count'] ?? 0;
+    $author['total_views'] = $stats['total_views'] ?? 0;
+    $author['total_likes'] = $likes['total_likes'] ?? 0;
+    
+    return $author;
+}
+
 // Increment post views
 function incrementPostViews($post_id) {
     $conn = getDB();

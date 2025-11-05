@@ -54,7 +54,7 @@ if (!$category_filter && !$search_query) {
     }
 }
 
-$authors = getAuthors(6);
+$authors = getAuthors(7);
 ?>
 
 <div class="container mx-auto px-4 py-8">
@@ -399,11 +399,14 @@ $authors = getAuthors(6);
     
     <!-- Authors Section -->
     <section id="authors" class="mb-16">
-        <h2 class="text-2xl font-bold text-gray-900 mb-6">Authors</h2>
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-gray-900">Authors</h2>
+            <a href="authors.php" class="text-blue-600 hover:text-blue-700 font-medium">View All →</a>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-6">
             <?php foreach ($authors as $author): ?>
                 <div class="text-center">
-                    <a href="author.php?id=<?php echo $author['id']; ?>">
+                    <a href="author.php?id=<?php echo $author['id']; ?>" class="block hover:opacity-80 transition-opacity">
                         <img src="<?php echo SITE_URL; ?>/assets/images/<?php echo htmlspecialchars($author['profile_photo']); ?>" 
                              alt="<?php echo htmlspecialchars($author['full_name'] ?? $author['username']); ?>"
                              class="w-20 h-20 rounded-full object-cover mx-auto mb-3"

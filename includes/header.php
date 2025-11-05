@@ -76,7 +76,7 @@ $categories = getCategories();
                         </div>
                     <?php else: ?>
                         <a href="login.php" class="px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base text-gray-700 hover:text-gray-900">Login</a>
-                        <a href="register.php" class="px-3 py-1.5 md:px-4 md:py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm md:text-base">Sign Up</a>
+                        <a href="register.php" class="px-3 py-1.5 md:px-4 md:py-2 bg-black text-white rounded hover:bg-gray-900 text-sm md:text-base">Sign Up</a>
                     <?php endif; ?>
                 </div>
             </div>
