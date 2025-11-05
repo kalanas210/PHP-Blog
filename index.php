@@ -124,7 +124,7 @@ $popular_categories = getPopularCategories(5);
     <!-- Main Hero Section -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16">
         <!-- Left Column: Small Posts -->
-        <div class="lg:col-span-3 space-y-6">
+        <div class="lg:col-span-3 space-y-6 order-2 lg:order-1">
             <?php foreach ($left_posts as $post): ?>
                 <article class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                     <a href="post.php?slug=<?php echo $post['slug']; ?>">
@@ -149,13 +149,13 @@ $popular_categories = getPopularCategories(5);
         </div>
         
         <!-- Center Column: Hero Post -->
-        <div class="lg:col-span-6 flex">
+        <div class="lg:col-span-6 flex order-1 lg:order-2">
             <?php if ($featured_post): ?>
                 <article class="bg-white rounded-lg overflow-hidden shadow-lg flex flex-col w-full">
                     <a href="post.php?slug=<?php echo $featured_post['slug']; ?>">
                         <img src="<?php echo SITE_URL; ?>/assets/images/<?php echo htmlspecialchars($featured_post['featured_image'] ?? 'default.jpg'); ?>" 
                              alt="<?php echo htmlspecialchars($featured_post['title']); ?>"
-                             class="w-full h-95 object-cover"
+                             class="w-full h-95 lg:h-95 object-cover"
                              onerror="this.src='<?php echo SITE_URL; ?>/assets/images/default.jpg'">
                     </a>
                     <div class="px-4 pt-4 pb-2 flex flex-col">
@@ -183,12 +183,12 @@ $popular_categories = getPopularCategories(5);
                                 $content_preview .= '...';
                             }
                         ?>
-                            <div class="text-gray-600 text-sm mb-3 leading-relaxed line-clamp-10">
+                            <div class="hidden lg:block text-gray-600 text-sm mb-3 leading-relaxed line-clamp-10">
                                 <?php echo htmlspecialchars($content_preview); ?>
                             </div>
                         <?php endif; ?>
                         
-                        <div class="flex items-center justify-between pt-3 border-t border-gray-100 mt-3">
+                        <div class="hidden lg:flex items-center justify-between pt-3 border-t border-gray-100 mt-3">
                             <div class="flex items-center gap-4">
                                 <p class="text-sm text-gray-500"><?php echo formatDate($featured_post['published_at'] ?? $featured_post['created_at']); ?></p>
                                 <?php if ($featured_post['full_name']): ?>
@@ -198,6 +198,10 @@ $popular_categories = getPopularCategories(5);
                             <a href="post.php?slug=<?php echo $featured_post['slug']; ?>" class="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center gap-1">
                                 Read More <i class="fas fa-arrow-right text-xs"></i>
                             </a>
+                        </div>
+                        <!-- Mobile: Simple date only -->
+                        <div class="lg:hidden pt-3 border-t border-gray-100 mt-3">
+                            <p class="text-sm text-gray-500"><?php echo formatDate($featured_post['published_at'] ?? $featured_post['created_at']); ?></p>
                         </div>
                     </div>
                 </article>
@@ -209,7 +213,7 @@ $popular_categories = getPopularCategories(5);
         </div>
         
         <!-- Right Column: Latest Posts Sidebar -->
-        <div class="lg:col-span-3 space-y-6">
+        <div class="lg:col-span-3 space-y-6 order-3">
             <!-- Latest Posts -->
             <div class="bg-white rounded-lg shadow-sm p-6">
                 <h3 class="text-lg font-bold text-gray-900 mb-4 uppercase">Latest</h3>
@@ -354,14 +358,14 @@ $popular_categories = getPopularCategories(5);
                                         $content_preview .= '...';
                                     }
                                 ?>
-                                    <div class="text-gray-600 text-sm mb-4 leading-relaxed line-clamp-6">
+                                    <div class="hidden lg:block text-gray-600 text-sm mb-4 leading-relaxed line-clamp-6">
                                         <?php echo nl2br(htmlspecialchars($content_preview)); ?>
                                     </div>
                                 <?php endif; ?>
                                 
                                 <!-- Author Info -->
                                 <?php if ($main_post['full_name'] || $main_post['username']): ?>
-                                    <div class="flex items-center gap-3 mb-4">
+                                    <div class="hidden lg:flex items-center gap-3 mb-4">
                                         <?php if ($main_post['profile_photo']): ?>
                                             <img src="<?php echo SITE_URL; ?>/assets/images/<?php echo htmlspecialchars($main_post['profile_photo']); ?>" 
                                                  alt="<?php echo htmlspecialchars($main_post['full_name'] ?? $main_post['username']); ?>"
@@ -374,11 +378,11 @@ $popular_categories = getPopularCategories(5);
                                         </div>
                                     </div>
                                 <?php else: ?>
-                                    <p class="text-sm text-gray-500 mb-4"><?php echo formatDate($main_post['published_at'] ?? $main_post['created_at']); ?></p>
+                                    <p class="hidden lg:block text-sm text-gray-500 mb-4"><?php echo formatDate($main_post['published_at'] ?? $main_post['created_at']); ?></p>
                                 <?php endif; ?>
                                 
                                 <!-- Stats and Read More -->
-                                <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
+                                <div class="hidden lg:flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
                                     <div class="flex items-center gap-4 text-xs text-gray-500">
                                         <span class="flex items-center gap-1">
                                             <i class="fas fa-eye"></i>
@@ -392,6 +396,10 @@ $popular_categories = getPopularCategories(5);
                                     <a href="post.php?slug=<?php echo $main_post['slug']; ?>" class="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center gap-1">
                                         Read More <i class="fas fa-arrow-right text-xs"></i>
                                     </a>
+                                </div>
+                                <!-- Mobile: Simple date only -->
+                                <div class="lg:hidden pt-3 border-t border-gray-100 mt-3">
+                                    <p class="text-sm text-gray-500"><?php echo formatDate($main_post['published_at'] ?? $main_post['created_at']); ?></p>
                                 </div>
                             </div>
                         </article>
