@@ -3,6 +3,18 @@ require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/functions.php';
 $current_user = getCurrentUser();
 $categories = getCategories();
+
+// Detect if we're in a subdirectory (dashboard, admin, etc.)
+$script_dir = dirname($_SERVER['SCRIPT_NAME']);
+$is_in_dashboard = strpos($script_dir, '/dashboard') !== false;
+$is_in_admin = strpos($script_dir, '/admin') !== false;
+
+// Set navigation paths
+$home_url = SITE_URL . '/index.php';
+$dashboard_url = $is_in_dashboard ? 'index.php' : SITE_URL . '/dashboard/index.php';
+$profile_url = $is_in_dashboard ? 'profile.php' : SITE_URL . '/dashboard/profile.php';
+$admin_url = $is_in_admin ? 'index.php' : SITE_URL . '/admin/index.php';
+$logout_url = $is_in_dashboard || $is_in_admin ? SITE_URL . '/logout.php' : 'logout.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +44,7 @@ $categories = getCategories();
                 
                 <!-- Center: Logo/Title -->
                 <div class="flex-1 text-center lg:flex-1">
-                    <a href="index.php" class="flex items-center justify-center gap-2">
+                    <a href="<?php echo $home_url; ?>" class="flex items-center justify-center gap-2">
                         <?php if (defined('SITE_LOGO') && SITE_LOGO): ?>
                             <img src="<?php echo SITE_URL; ?>/assets/images/<?php echo htmlspecialchars(SITE_LOGO); ?>" 
                                  alt="<?php echo SITE_NAME; ?>" 
@@ -58,18 +70,18 @@ $categories = getCategories();
                                 <i class="fas fa-chevron-down text-xs hidden md:inline"></i>
                             </button>
                             <div id="profile-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 z-50">
-                                <a href="dashboard/index.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <a href="<?php echo $dashboard_url; ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                     <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
                                 </a>
-                                <a href="dashboard/profile.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <a href="<?php echo $profile_url; ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                     <i class="fas fa-user mr-2"></i>Profile
                                 </a>
                                 <?php if (isAdmin()): ?>
-                                    <a href="admin/index.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    <a href="<?php echo $admin_url; ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                         <i class="fas fa-cog mr-2"></i>Admin Panel
                                     </a>
                                 <?php endif; ?>
-                                <a href="logout.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border-t border-gray-200">
+                                <a href="<?php echo $logout_url; ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border-t border-gray-200">
                                     <i class="fas fa-sign-out-alt mr-2"></i>Logout
                                 </a>
                             </div>
@@ -88,7 +100,7 @@ $categories = getCategories();
                 <!-- Desktop Navigation -->
                 <div class="hidden lg:flex items-center justify-center">
                     <ul class="flex items-center gap-6 py-4">
-                        <li><a href="index.php" class="text-gray-700 hover:text-gray-900 font-medium">Home</a></li>
+                        <li><a href="<?php echo $home_url; ?>" class="text-gray-700 hover:text-gray-900 font-medium">Home</a></li>
                         <?php 
                         // Get only header categories (6 categories)
                         $header_cats = getCategories('header');
@@ -97,14 +109,14 @@ $categories = getCategories();
                             $cat_posts = getPosts(3, 0, $cat['slug'], 'published');
                         ?>
                             <li class="relative group">
-                                <a href="index.php?category=<?php echo $cat['slug']; ?>" class="text-gray-700 hover:text-gray-900 font-medium flex items-center gap-1">
+                                <a href="<?php echo $home_url; ?>?category=<?php echo $cat['slug']; ?>" class="text-gray-700 hover:text-gray-900 font-medium flex items-center gap-1">
                                     <?php echo htmlspecialchars($cat['name']); ?> <i class="fas fa-chevron-down text-xs"></i>
                                 </a>
                                 <?php if (!empty($cat_posts)): ?>
                                     <div class="hidden group-hover:block absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-96 bg-white rounded-lg shadow-xl border border-gray-200 z-50 p-4">
                                         <div class="grid grid-cols-1 gap-3">
                                             <?php foreach ($cat_posts as $post): ?>
-                                                <a href="post.php?slug=<?php echo $post['slug']; ?>" class="flex items-start gap-3 p-2 rounded hover:bg-gray-50 transition-colors">
+                                                <a href="<?php echo SITE_URL; ?>/post.php?slug=<?php echo $post['slug']; ?>" class="flex items-start gap-3 p-2 rounded hover:bg-gray-50 transition-colors">
                                                     <img src="<?php echo SITE_URL; ?>/assets/images/<?php echo htmlspecialchars($post['featured_image'] ?? 'default.jpg'); ?>" 
                                                          alt="<?php echo htmlspecialchars($post['title']); ?>"
                                                          class="w-20 h-20 object-cover rounded flex-shrink-0"
@@ -117,7 +129,7 @@ $categories = getCategories();
                                             <?php endforeach; ?>
                                         </div>
                                         <div class="mt-3 pt-3 border-t border-gray-200 text-center">
-                                            <a href="index.php?category=<?php echo $cat['slug']; ?>" class="text-sm text-blue-600 hover:text-blue-700 font-medium">
+                                            <a href="<?php echo $home_url; ?>?category=<?php echo $cat['slug']; ?>" class="text-sm text-blue-600 hover:text-blue-700 font-medium">
                                                 View all <?php echo htmlspecialchars($cat['name']); ?> posts →
                                             </a>
                                         </div>
@@ -125,16 +137,16 @@ $categories = getCategories();
                                 <?php endif; ?>
                             </li>
                         <?php endforeach; ?>
-                        <li><a href="index.php#authors" class="text-gray-700 hover:text-gray-900 font-medium">Author list</a></li>
+                        <li><a href="<?php echo $home_url; ?>#authors" class="text-gray-700 hover:text-gray-900 font-medium">Author list</a></li>
                     </ul>
                     
                     <div class="flex items-center gap-6 ml-6">
-                        <a href="index.php#newsletter" class="text-gray-700 hover:text-gray-900 font-medium">Newsletter</a>
+                        <a href="<?php echo $home_url; ?>#newsletter" class="text-gray-700 hover:text-gray-900 font-medium">Newsletter</a>
                         <div class="flex items-center">
                             <button type="button" id="search-toggle-btn" class="text-gray-700 hover:text-gray-900 focus:outline-none cursor-pointer">
                                 <i class="fas fa-search text-lg"></i>
                             </button>
-                            <form method="GET" action="index.php" id="search-form" class="hidden ml-3 flex items-center">
+                            <form method="GET" action="<?php echo $home_url; ?>" id="search-form" class="hidden ml-3 flex items-center">
                                 <input type="text" 
                                        name="search" 
                                        id="search-input"
@@ -151,7 +163,7 @@ $categories = getCategories();
                 
                 <!-- Mobile Navigation -->
                 <div class="lg:hidden flex items-center justify-between py-3">
-                    <a href="index.php#newsletter" class="text-gray-700 hover:text-gray-900 font-medium text-sm">Newsletter</a>
+                    <a href="<?php echo $home_url; ?>#newsletter" class="text-gray-700 hover:text-gray-900 font-medium text-sm">Newsletter</a>
                     <div class="flex items-center gap-3">
                         <button type="button" id="search-toggle-btn-mobile" class="text-gray-700 hover:text-gray-900 focus:outline-none cursor-pointer p-2">
                             <i class="fas fa-search text-lg"></i>
@@ -161,7 +173,7 @@ $categories = getCategories();
                 
                 <!-- Mobile Search Form -->
                 <div id="search-form-mobile-container" class="lg:hidden hidden pb-3">
-                    <form method="GET" action="index.php" id="search-form-mobile" class="flex items-center w-full">
+                    <form method="GET" action="<?php echo $home_url; ?>" id="search-form-mobile" class="flex items-center w-full">
                         <input type="text" 
                                name="search" 
                                id="search-input-mobile"
@@ -185,15 +197,15 @@ $categories = getCategories();
                         </button>
                     </div>
                     <ul class="py-4">
-                        <li><a href="index.php" class="block px-4 py-3 text-gray-700 hover:bg-gray-100 font-medium">Home</a></li>
+                        <li><a href="<?php echo $home_url; ?>" class="block px-4 py-3 text-gray-700 hover:bg-gray-100 font-medium">Home</a></li>
                         <?php 
                         // Get only header categories for mobile menu
                         $header_cats_mobile = getCategories('header');
                         foreach ($header_cats_mobile as $cat): ?>
-                            <li><a href="index.php?category=<?php echo $cat['slug']; ?>" class="block px-4 py-3 text-gray-700 hover:bg-gray-100"><?php echo htmlspecialchars($cat['name']); ?></a></li>
+                            <li><a href="<?php echo $home_url; ?>?category=<?php echo $cat['slug']; ?>" class="block px-4 py-3 text-gray-700 hover:bg-gray-100"><?php echo htmlspecialchars($cat['name']); ?></a></li>
                         <?php endforeach; ?>
-                        <li><a href="index.php#authors" class="block px-4 py-3 text-gray-700 hover:bg-gray-100">Author list</a></li>
-                        <li><a href="index.php#newsletter" class="block px-4 py-3 text-gray-700 hover:bg-gray-100">Newsletter</a></li>
+                        <li><a href="<?php echo $home_url; ?>#authors" class="block px-4 py-3 text-gray-700 hover:bg-gray-100">Author list</a></li>
+                        <li><a href="<?php echo $home_url; ?>#newsletter" class="block px-4 py-3 text-gray-700 hover:bg-gray-100">Newsletter</a></li>
                     </ul>
                 </div>
             </div>

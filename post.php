@@ -31,7 +31,7 @@ $page_title = $post['title'];
         <?php if ($post['featured_image']): ?>
             <img src="<?php echo SITE_URL; ?>/assets/images/<?php echo htmlspecialchars($post['featured_image']); ?>" 
                  alt="<?php echo htmlspecialchars($post['title']); ?>"
-                 class="w-full h-96 object-cover"
+                 class="w-full h-95 object-cover"
                  onerror="this.src='<?php echo SITE_URL; ?>/assets/images/default.jpg'">
         <?php endif; ?>
         

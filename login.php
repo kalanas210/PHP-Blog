@@ -1,15 +1,17 @@
 <?php
-require_once __DIR__ . '/includes/header.php';
+// Start session and include auth first (before any output)
 require_once __DIR__ . '/includes/auth.php';
 
 $error = '';
 $success = '';
 
+// Check if user is already logged in (redirect before any output)
 if (isLoggedIn()) {
     header('Location: index.php');
     exit;
 }
 
+// Process POST request before including header (to avoid output before redirect)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
@@ -28,7 +30,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+// Only include header after processing (when we need to display the form)
 $page_title = 'Login';
+require_once __DIR__ . '/includes/header.php';
 ?>
 
 <div class="container mx-auto px-4 py-16 max-w-md">

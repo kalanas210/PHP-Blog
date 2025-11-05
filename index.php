@@ -155,10 +155,10 @@ $popular_categories = getPopularCategories(5);
                     <a href="post.php?slug=<?php echo $featured_post['slug']; ?>">
                         <img src="<?php echo SITE_URL; ?>/assets/images/<?php echo htmlspecialchars($featured_post['featured_image'] ?? 'default.jpg'); ?>" 
                              alt="<?php echo htmlspecialchars($featured_post['title']); ?>"
-                             class="w-full h-96 object-cover"
+                             class="w-full h-95 object-cover"
                              onerror="this.src='<?php echo SITE_URL; ?>/assets/images/default.jpg'">
                     </a>
-                    <div class="p-4 flex flex-col">
+                    <div class="px-4 pt-4 pb-2 flex flex-col">
                         <?php if ($featured_post['category_name']): ?>
                             <span class="text-xs font-semibold text-gray-600 uppercase"><?php echo htmlspecialchars($featured_post['category_name']); ?></span>
                         <?php endif; ?>
