@@ -1,5 +1,6 @@
 # Configuration files with sensitive data
 config/config.php
+.env
 
 # Uploaded files (user content)
 assets/images/*.jpg
