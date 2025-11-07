@@ -58,6 +58,7 @@ A full-featured, modern blog platform built with PHP, MySQL, Tailwind CSS, and J
 
 ### Technical Features
 - **Security**:
+  - Environment-based configuration (`.env` files)
   - Password hashing with bcrypt
   - SQL injection protection (prepared statements)
   - XSS protection (htmlspecialchars)
@@ -118,44 +119,47 @@ cd blog
 
 ### Step 3: Configure the Application
 
-1. **Copy the production config example** (if needed):
+1. **Copy the `.env.example` file to `.env`**:
    ```bash
-   cp config/config.production.php.example config/config.php
+   cp .env.example .env
+   ```
+   
+   On Windows:
+   ```bash
+   copy .env.example .env
    ```
 
-2. **Edit `config/config.php`** with your settings:
-   ```php
-   <?php
-   // Database Configuration
-   define('DB_HOST', 'localhost');
-   define('DB_USER', 'your_database_username');
-   define('DB_PASS', 'your_database_password');
-   define('DB_NAME', 'blog_app');
+2. **Edit the `.env` file** with your settings:
+   ```env
+   # Database Configuration
+   DB_HOST=localhost
+   DB_USER=your_database_username
+   DB_PASS=your_database_password
+   DB_NAME=blog_app
    
-   // Site Configuration
-   define('SITE_NAME', 'Your Blog Name');
-   define('SITE_URL', 'http://localhost/blog'); // Change to your domain
-   define('SITE_LOGO', 'logo.png'); // Or set to false for text only
+   # Site Configuration
+   SITE_NAME=Your Blog Name
+   SITE_URL=http://localhost/blog
+   SITE_LOGO=logo.png
    
-   // File Upload Configuration
-   define('UPLOAD_DIR', __DIR__ . '/../assets/images/');
-   define('UPLOAD_MAX_SIZE', 5242880); // 5MB
+   # File Upload Configuration
+   UPLOAD_DIR=../assets/images/
+   UPLOAD_MAX_SIZE=5242880
    
-   // Session Configuration
-   ini_set('session.cookie_httponly', 1);
-   ini_set('session.use_only_cookies', 1);
-   session_start();
-   
-   // Error Reporting (set to 0 in production)
-   error_reporting(E_ALL);
-   ini_set('display_errors', 1);
-   ?>
+   # Error Reporting
+   # For development: E_ALL
+   # For production: 0
+   ERROR_REPORTING=E_ALL
+   DISPLAY_ERRORS=1
    ```
 
-3. **Set proper file permissions**:
+   **Note**: The `.env` file is automatically ignored by Git for security. Never commit your `.env` file to version control.
+
+3. **Set proper file permissions** (Linux/Mac):
    ```bash
    chmod 755 assets/images/
    chmod 644 assets/images/*
+   chmod 600 .env  # Secure your .env file
    ```
 
 ### Step 4: Web Server Configuration
@@ -219,8 +223,10 @@ blog/
 │       └── [uploaded files]
 │
 ├── config/
-│   ├── config.php           # Main configuration (create this)
+│   ├── config.php           # Main configuration (loads from .env)
 │   └── config.production.php.example  # Production config template
+├── .env                      # Environment variables (create from .env.example)
+├── .env.example              # Environment variables template
 │
 ├── dashboard/               # Author dashboard
 │   ├── index.php           # Dashboard home
@@ -320,10 +326,15 @@ blog/
 
 ### Changing Site Name and Logo
 
-Edit `config/config.php`:
-```php
-define('SITE_NAME', 'Your Blog Name');
-define('SITE_LOGO', 'logo.png'); // or false for text only
+Edit the `.env` file in the project root:
+```env
+SITE_NAME=Your Blog Name
+SITE_LOGO=logo.png
+```
+
+To use text only (no logo), set:
+```env
+SITE_LOGO=false
 ```
 
 Upload your logo to `assets/images/logo.png`
@@ -351,7 +362,9 @@ The project uses **Tailwind CSS** via CDN. To customize:
 ### Common Issues
 
 1. **Database Connection Error**:
-   - Check database credentials in `config/config.php`
+   - Check database credentials in `.env` file
+   - Verify the `.env` file exists in the project root
+   - Ensure `.env` file has correct format (KEY=VALUE, no spaces around =)
    - Verify database exists and user has proper permissions
    - Check MySQL service is running
 
@@ -373,8 +386,9 @@ The project uses **Tailwind CSS** via CDN. To customize:
 ### Getting Help
 
 - Check error logs in your web server
-- Enable error reporting in `config/config.php` (development only)
+- Enable error reporting in `.env` file (set `DISPLAY_ERRORS=1` for development only)
 - Review PHP error logs
+- Verify `.env` file exists and has correct format
 
 ## 📝 Database Migration
 
@@ -390,27 +404,40 @@ Or manually execute the SQL in `database/migration_add_category_fields.sql`
 
 ### Before Going Live
 
-1. **Update Configuration**:
-   ```php
-   // config/config.php
-   error_reporting(0);
-   ini_set('display_errors', 0);
-   define('SITE_URL', 'https://yourdomain.com');
+1. **Update Configuration in `.env`**:
+   ```env
+   # Update site URL
+   SITE_URL=https://yourdomain.com
+   
+   # Disable error reporting for production
+   ERROR_REPORTING=0
+   DISPLAY_ERRORS=0
+   
+   # Update database credentials for production
+   DB_HOST=your_production_host
+   DB_USER=your_production_user
+   DB_PASS=your_production_password
+   DB_NAME=your_production_database
    ```
 
-2. **Change Default Passwords**: Change admin password immediately
-
-3. **Enable HTTPS**: Configure SSL certificate
-
-4. **Set Proper Permissions**:
+2. **Secure your `.env` file**:
    ```bash
-   chmod 644 config/config.php
+   chmod 600 .env  # Linux/Mac - restrict access to owner only
+   ```
+
+3. **Change Default Passwords**: Change admin password immediately
+
+4. **Enable HTTPS**: Configure SSL certificate
+
+5. **Set Proper Permissions**:
+   ```bash
+   chmod 600 .env  # Secure environment file
    chmod 755 assets/images/
    ```
 
-5. **Backup Database**: Set up regular database backups
+6. **Backup Database**: Set up regular database backups
 
-6. **Optimize Images**: Compress uploaded images for better performance
+7. **Optimize Images**: Compress uploaded images for better performance
 
 ### Recommended Production Settings
 
