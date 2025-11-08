@@ -493,4 +493,4 @@ For issues, questions, or contributions:
 
 **Version**: 1.0.0  
 **Last Updated**: 2024  
-**Developed by**: KSA Labs
+**Developed by**: Kalana Sandakelum ( KSA Labs )

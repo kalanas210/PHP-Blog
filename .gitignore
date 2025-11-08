@@ -29,7 +29,6 @@ desktop.ini
 
 # IDE files
 .idea/
-.vscode/
 *.swp
 *.swo
 *~
@@ -39,3 +38,6 @@ desktop.ini
 *.bak
 *.old
 
+temp_auto_push.bat
+temp_interactive_push.bat
+.gitignore
