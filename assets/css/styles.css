@@ -59,3 +59,92 @@
 #mobile-menu {
     /* Menu will be positioned dynamically via JavaScript */
 }
+
+/* Rich Text Editor Styles */
+#editor-container .ql-editor {
+    min-height: 400px;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+#editor-container .ql-toolbar {
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+#editor-container .ql-container {
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+
+/* Preview container styles */
+#preview-container {
+    font-size: 16px;
+    line-height: 1.75;
+}
+
+#preview-container h1, #preview-container h2, #preview-container h3,
+#preview-container h4, #preview-container h5, #preview-container h6 {
+    margin-top: 1.5em;
+    margin-bottom: 0.75em;
+    font-weight: 700;
+}
+
+#preview-container h1 { font-size: 2em; }
+#preview-container h2 { font-size: 1.5em; }
+#preview-container h3 { font-size: 1.25em; }
+
+#preview-container p {
+    margin-bottom: 1em;
+}
+
+#preview-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+    margin: 1em 0;
+}
+
+#preview-container ul, #preview-container ol {
+    margin: 1em 0;
+    padding-left: 2em;
+}
+
+#preview-container blockquote {
+    border-left: 4px solid #e5e7eb;
+    padding-left: 1em;
+    margin: 1em 0;
+    font-style: italic;
+    color: #6b7280;
+}
+
+#preview-container code {
+    background-color: #f3f4f6;
+    padding: 0.2em 0.4em;
+    border-radius: 0.25rem;
+    font-family: monospace;
+    font-size: 0.9em;
+}
+
+#preview-container pre {
+    background-color: #f3f4f6;
+    padding: 1em;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin: 1em 0;
+}
+
+#preview-container pre code {
+    background-color: transparent;
+    padding: 0;
+}
+
+#preview-container a {
+    color: #2563eb;
+    text-decoration: underline;
+}
+
+#preview-container a:hover {
+    color: #1d4ed8;
+}

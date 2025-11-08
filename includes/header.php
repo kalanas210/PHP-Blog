@@ -25,6 +25,11 @@ $logout_url = $is_in_dashboard || $is_in_admin ? SITE_URL . '/logout.php' : 'log
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="<?php echo SITE_URL; ?>/assets/css/styles.css" rel="stylesheet">
+    <?php if ($is_in_dashboard): ?>
+    <!-- Quill.js Rich Text Editor -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <?php endif; ?>
     <script>
         window.SITE_URL = '<?php echo SITE_URL; ?>';
     </script>

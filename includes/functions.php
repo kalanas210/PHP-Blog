@@ -396,5 +396,27 @@ function truncate($text, $length = 150) {
     }
     return substr($text, 0, $length) . '...';
 }
+
+// Safely sanitize HTML content from rich text editor
+// Allows safe HTML tags used by Quill.js while preventing XSS
+function sanitizeHtmlContent($html) {
+    if (empty($html)) {
+        return '';
+    }
+    
+    // Allowed HTML tags for rich text editor content
+    $allowed_tags = '<p><br><strong><b><em><i><u><s><strike><h1><h2><h3><h4><h5><h6><ul><ol><li><blockquote><code><pre><a><img><span><div><sub><sup>';
+    
+    // Strip all tags except allowed ones
+    $sanitized = strip_tags($html, $allowed_tags);
+    
+    // Remove potentially dangerous attributes but keep safe ones
+    // This is a basic sanitization - for production, consider using HTMLPurifier
+    $sanitized = preg_replace('/on\w+="[^"]*"/i', '', $sanitized); // Remove event handlers
+    $sanitized = preg_replace('/javascript:/i', '', $sanitized); // Remove javascript: protocol
+    $sanitized = preg_replace('/<a\s+([^>]*?)href\s*=\s*["\'](javascript:|data:)[^"\']*["\']([^>]*?)>/i', '<a>', $sanitized); // Remove dangerous hrefs
+    
+    return $sanitized;
+}
 ?>
 

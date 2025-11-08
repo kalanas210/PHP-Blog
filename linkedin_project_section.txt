@@ -1,0 +1,66 @@
+LINKEDIN PROJECT SECTION CONTENT
+================================
+
+PROJECT NAME:
+KSA News Blog Platform
+
+DESCRIPTION:
+Developed a full-featured blog platform and content management system as an individual university project for IN2120 – WEB PROGRAMMING. The application provides a complete solution for content creation, user management, and social interactions.
+
+Key Responsibilities & Achievements:
+• Designed and implemented a secure authentication system with role-based access control (Admin, Author, User)
+• Built a comprehensive admin panel for managing posts, users, and categories with approval workflows
+• Developed RESTful API endpoints for AJAX operations (likes, comments, shares)
+• Implemented security best practices including SQL injection prevention, XSS protection, and bcrypt password hashing
+• Created responsive, mobile-first UI using Tailwind CSS with optimized database queries
+• Integrated rich text editor for post creation with draft/publish functionality
+• Developed full-text search and category-based content organization
+
+Technologies Used:
+PHP, MySQL, JavaScript, Tailwind CSS, HTML5, Font Awesome
+
+ASSOCIATED WITH:
+[Your University Name] - IN2120 Web Programming Module
+
+START DATE:
+[Enter your start date, e.g., "January 2024" or "2024"]
+
+END DATE:
+[Enter your end date, e.g., "December 2024" or "2024"]
+
+PROJECT URL:
+[Optional - if you have it hosted, add the URL]
+
+TEAM MEMBERS:
+Individual Project
+
+---
+
+ALTERNATIVE SHORTER DESCRIPTION (if character limit is an issue):
+
+Developed a full-featured blog platform and CMS as an individual university project for IN2120 – WEB PROGRAMMING. Built with PHP, MySQL, and JavaScript, featuring secure authentication, role-based access control, admin dashboard, RESTful APIs, and responsive design. Implemented security best practices including SQL injection prevention, XSS protection, and bcrypt hashing.
+
+Technologies: PHP, MySQL, JavaScript, Tailwind CSS
+
+---
+
+DETAILED VERSION FOR PROJECT DESCRIPTION FIELD:
+
+Developed a comprehensive blog platform and content management system as an individual university project for the module IN2120 – WEB PROGRAMMING. This full-stack web application demonstrates proficiency in modern web development practices and security implementation.
+
+The platform features a three-tier user system (Admin, Author, User) with role-based access control. Admins can manage posts, users, and categories through an intuitive dashboard. Authors can create, edit, and publish posts with a rich text editor, while users can interact through likes, comments, and sharing functionality.
+
+Technical implementation includes:
+- Secure authentication system with bcrypt password hashing
+- SQL injection prevention using prepared statements
+- XSS protection through input sanitization
+- RESTful API endpoints for AJAX operations
+- MVC-like architecture for maintainable code structure
+- Responsive, mobile-first design using Tailwind CSS
+- Optimized database queries with proper indexing
+- Environment-based configuration management
+
+The project showcases ability to build production-ready web applications with emphasis on security, performance, and user experience.
+
+Technologies: PHP, MySQL, JavaScript, Tailwind CSS, HTML5
+

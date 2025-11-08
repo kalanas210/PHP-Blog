@@ -1,0 +1,66 @@
+🚀 Excited to share my latest project: KSA News Blog Platform - A Full-Featured Content Management System
+
+I've just completed this as my individual university project for the module IN2120 – WEB PROGRAMMING. Built from scratch using PHP, MySQL, Tailwind CSS, and JavaScript, this project demonstrates modern web development practices and full-stack capabilities.
+
+✨ Key Features:
+
+🔐 Security First
+- Bcrypt password hashing
+- SQL injection protection with prepared statements
+- XSS protection and input sanitization
+- Role-based access control (Admin, Author, User)
+
+📝 Content Management
+- Rich text editor for post creation
+- Draft and publish workflow
+- Category management with featured sections
+- Image upload and optimization
+- Full-text search functionality
+
+👥 User Experience
+- Responsive design (mobile-first approach)
+- Like, share, and comment system
+- Author profiles and statistics
+- Admin dashboard with analytics
+- Guest commenting support
+
+🛠️ Technical Highlights
+- MVC-like architecture
+- RESTful API endpoints for AJAX operations
+- Environment-based configuration (.env)
+- Optimized database queries with indexes
+- Session security with HttpOnly cookies
+
+💡 What I Learned:
+- Building scalable PHP applications
+- Implementing secure authentication systems
+- Creating intuitive admin panels
+- Optimizing database performance
+- Writing clean, maintainable code
+
+This project showcases my ability to build production-ready web applications with attention to security, performance, and user experience.
+
+#WebDevelopment #PHP #MySQL #FullStackDevelopment #ContentManagementSystem #SoftwareDevelopment #Coding #TechProjects #WebDesign #JavaScript #UniversityProject #IN2120
+
+---
+
+ALTERNATIVE SHORTER VERSION:
+
+🚀 Just completed my individual university project for IN2120 – WEB PROGRAMMING!
+
+Built a full-featured blog platform from scratch using PHP, MySQL, Tailwind CSS & JavaScript. 
+
+Features include:
+✅ Secure user authentication & role-based access
+✅ Content management with rich text editor
+✅ Like, share & comment system
+✅ Responsive design (mobile-first)
+✅ Admin dashboard with analytics
+✅ Full-text search & category management
+
+Highlights: Security-first approach with prepared statements, XSS protection, and bcrypt hashing. Clean MVC architecture with RESTful APIs.
+
+Grateful for the learning experience in web programming! 💻
+
+#WebDevelopment #PHP #FullStack #CMS #SoftwareDevelopment #UniversityProject #IN2120 #WebProgramming
+

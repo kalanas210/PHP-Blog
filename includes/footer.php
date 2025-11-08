@@ -79,6 +79,9 @@
     <?php endif; ?>
     <?php if (isset($page_title) && strpos($_SERVER['REQUEST_URI'], 'dashboard') !== false): ?>
         <script src="<?php echo SITE_URL; ?>/assets/js/dashboard.js"></script>
+        <?php if (strpos($_SERVER['REQUEST_URI'], 'new-post.php') !== false || strpos($_SERVER['REQUEST_URI'], 'edit-post.php') !== false): ?>
+            <script src="<?php echo SITE_URL; ?>/assets/js/editor.js"></script>
+        <?php endif; ?>
     <?php endif; ?>
 </body>
 </html>

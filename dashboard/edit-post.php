@@ -142,9 +142,9 @@ require_once __DIR__ . '/../includes/header.php';
             <label for="content" class="block text-gray-700 font-medium mb-2">Content *</label>
             <textarea id="content" 
                       name="content" 
-                      rows="15"
                       required
-                      class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"><?php echo htmlspecialchars($post['content']); ?></textarea>
+                      class="w-full"><?php echo htmlspecialchars($post['content']); ?></textarea>
+            <p class="text-sm text-gray-500 mt-2">Use the toolbar above to format your content. Click Preview to see how it will look.</p>
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">

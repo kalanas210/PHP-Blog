@@ -55,7 +55,7 @@ $page_title = $post['title'];
             <?php endif; ?>
             
             <div class="prose max-w-none mb-8">
-                <?php echo nl2br(htmlspecialchars($post['content'])); ?>
+                <?php echo sanitizeHtmlContent($post['content']); ?>
             </div>
             
             <!-- Like, Share, Comment Section -->
