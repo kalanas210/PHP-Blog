@@ -30,7 +30,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
             $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
             
-            if (in_array($ext, $allowed) && $file['size'] <= UPLOAD_MAX_SIZE) {
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mime = finfo_file($finfo, $file['tmp_name']);
+            finfo_close($finfo);
+            $allowed_mimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            
+            if (in_array($ext, $allowed) && in_array($mime, $allowed_mimes) && $file['size'] <= UPLOAD_MAX_SIZE) {
                 $filename = uniqid() . '.' . $ext;
                 $upload_path = __DIR__ . '/../assets/images/' . $filename;
                 

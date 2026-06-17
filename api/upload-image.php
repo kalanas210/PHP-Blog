@@ -32,6 +32,18 @@ if (!in_array($ext, $allowed)) {
     exit;
 }
 
+// Verify it's an actual image
+$finfo = finfo_open(FILEINFO_MIME_TYPE);
+$mime = finfo_file($finfo, $file['tmp_name']);
+finfo_close($finfo);
+
+$allowed_mimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+if (!in_array($mime, $allowed_mimes)) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'error' => 'Invalid image content.']);
+    exit;
+}
+
 // Validate file size (5MB max)
 if ($file['size'] > UPLOAD_MAX_SIZE) {
     http_response_code(400);
